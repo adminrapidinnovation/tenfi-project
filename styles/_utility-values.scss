@@ -1,0 +1,74 @@
+$wh-values: map-merge($spacers, (
+  p25: 25%,
+  p50: 50%,
+  p75: 75%,
+  p100: 100%,
+  full: 100%,
+  auto: auto,
+));
+
+$theme-colors: map-merge($theme-colors, ("white": $white));
+
+$font-size-values: map-merge-all(
+    create-spacers(2, 60, 10),
+    create-spacers(1, 20, 10), (
+      100: rem-calc(100px),
+    )
+);
+
+$line-height-values: (
+  '1_1': 1.1,
+  '1_2': 1.2,
+  '1_22': 1.22,
+  '1_3': 1.3,
+  '1_4': 1.4,
+  '1_5': 1.5,
+  '1_7': 1.7,
+  '1_78': 1.78,
+  '1_82': 1.82,
+);
+
+$letter-spacing-values: (
+  20: 0.02em,
+  50: 0.05em,
+  100: 0.1em,
+);
+
+$background-color-values: (
+  transparent: transparent
+);
+
+$color-values: (
+  'black': $black,
+);
+
+$border-radius-values: (
+  0: 0,
+  8: rem-calc(8px),
+  4: rem-calc(4px),
+  circle: 50%,
+  pill: $border-radius-pill,
+);
+
+$font-weight-values: (
+  100: 100,
+);
+
+$z-values: (
+  0: 0,
+  1: 1,
+);
+
+$min-values: (
+  100: 100%,
+);
+
+$opacity-values: (
+  0: 0,
+  30: 0.3,
+  40: 0.4,
+  50: 0.5,
+  70: 0.7,
+  80: 0.8,
+  100: 1,
+);

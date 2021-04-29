@@ -1,0 +1,62 @@
+.el {
+  $border-width: 2px;
+  @include font-size(16px);
+  background-color: $body-bg;
+  border-radius: rem-calc(5px);
+  box-shadow: 0 0 0 $border-width $gray-700;
+  letter-spacing: 0.01em;
+  line-height: (19 / 16);
+  margin: $border-width $border-width rem-calc(10px);
+
+  &:last-child {
+    margin-bottom: $border-width;
+  }
+}
+
+.col1 {
+  flex-shrink: 0;
+  align-items: center;
+  border-right: 1px solid $gray-700;
+  display: flex;
+  width: rem-calc(350px);
+  padding: rem-calc(16px 32px);
+}
+
+.col2 {
+  margin-left: rem-calc(22px);
+  padding: rem-calc(24px 22px 22px);
+}
+
+.col3 {
+  flex-grow: 1;
+  padding: rem-calc(18px 22px);
+}
+
+.col4 {
+  align-self: center;
+  flex-shrink: 0;
+  padding-left: rem-calc(32px);
+  padding-right: rem-calc(8px);
+}
+
+.spinners {
+  flex: 0 0 rem-calc(22px);
+  margin: rem-calc(0 8px 6px);
+  text-align: center;
+
+  svg {
+    height: rem-calc(18px);
+    width: rem-calc(4px);
+  }
+}
+
+.badge {
+  background-color: $danger;
+  border-radius: rem-calc(4px);
+  color: $gray-900;
+  display: inline-block;
+  font-weight: 700;
+  padding: rem-calc(8px 32px);
+  text-transform: uppercase;
+  white-space: nowrap;
+}

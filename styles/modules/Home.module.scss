@@ -1,0 +1,28 @@
+.container {
+  padding-top: rem-calc(40px);
+}
+
+.title {
+  @include font-size(46px);
+  font-family: $secondary-font-family;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 76 / 46 * 1em;
+  text-transform: uppercase;
+}
+
+.body {
+  padding: 0 wrap-calc($page-spacer-x);
+
+  @media(max-width: 480px) {
+    padding: 0;
+  }
+}
+
+.row {
+  margin: 0 wrap-calc(-$layt-grid-gutter / 2, $wrapper-inner-width - $page-spacer-x * 2);
+}
+
+.col {
+  padding: 0 wrap-calc($layt-grid-gutter / 2, ($wrapper-inner-width - $page-spacer-x * 2) + $layt-grid-gutter)
+}

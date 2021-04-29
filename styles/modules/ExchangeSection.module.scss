@@ -1,0 +1,8 @@
+.el {
+  > svg {
+    display: block;
+    height: rem-calc(34px);
+    margin: rem-calc(24px) auto;
+    width: rem-calc(20px);
+  }
+}

@@ -1,0 +1,33 @@
+$fs-breakpoints: (
+  md: 15px,
+  sm: 14px,
+) !default;
+
+$fs-min-font-size: 12px !default;
+$fs-font-size-base: $font-size-base !default;
+
+@mixin fs-calc-html($breakpoints: $fs-breakpoints) {
+  @each $breakpoint, $breakpointFontSize in $breakpoints {
+    @include media-breakpoint-down($breakpoint) {
+      font-size: rem-calc($breakpointFontSize);
+    }
+  }
+}
+
+@mixin fs-calc($font-size, $min-font-size: $fs-min-font-size, $breakpoints: $fs-breakpoints, $base: $fs-font-size-base) {
+  font-size: rem-calc($font-size);
+
+  @each $breakpoint, $breakpointFontSize in $breakpoints {
+    @if unit($base) == 'rem' {
+      $base: strip-unit($base) * 16px;
+    }
+
+    $diff: $base - $breakpointFontSize;
+
+    @if ($font-size - $diff < $min-font-size) {
+      @include media-breakpoint-down($breakpoint) {
+        font-size: rem-calc($font-size + $diff);
+      }
+    }
+  }
+}

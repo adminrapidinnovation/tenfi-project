@@ -1,0 +1,280 @@
+.table {
+  border-collapse: initial;
+  border-spacing: rem-calc(0 10px);
+  display: table;
+  margin: 2px;
+  min-width: calc(100% - 4px);
+
+  @include media-breakpoint-down(xl) {
+    thead {
+      display: block;
+    }
+
+    thead tr {
+      display: flex;
+      justify-content: center;
+      margin: rem-calc(0 -4px);
+      padding: rem-calc(0 10px) 2px;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    thead tr {
+      margin: rem-calc(0 -2px);
+    }
+  }
+
+  th {
+    padding: 0 rfs-value(22px);
+    font-weight: $font-weight-base;
+
+    &:first-child {
+      padding: 0 rfs-value(32px);
+    }
+
+    &:nth-child(2) {
+      @include padding-left(44px);
+    }
+
+    @include media-breakpoint-down(xl) {
+      flex: 0 1 auto;
+      padding: 0 rem-calc(4px) !important;
+      display: block;
+    }
+
+    @include media-breakpoint-down(sm) {
+     padding: 0 rem-calc(2px) !important;
+    }
+  }
+
+  @include media-breakpoint-down(xl) {
+    display: block;
+    border-spacing: 0;
+
+    tbody {
+      display: block;
+    }
+
+    td {
+      display: block;
+    }
+  }
+}
+
+.headrow {
+  box-shadow: 0 0 0 2px $gray-700;
+  background-color: $body-bg;
+
+
+  &:not(.active) {
+    border-radius: rem-calc(10px);
+  }
+
+  @include media-breakpoint-down(xl) {
+    display: grid;
+    grid-template-columns: min-content 30px min-content 1fr min-content min-content;
+    margin-bottom: rem-calc(10px);
+  }
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: min-content 30px min-content 1fr min-content;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr 30px 1fr;
+  }
+
+  td {
+    @include padding-left(22px);
+    @include padding-right(22px);
+    @include font-size(18px);
+    line-height: (21 / 18);
+    padding-bottom: rem-calc(17px);
+    padding-top: rem-calc(17px);
+    vertical-align: middle;
+  }
+
+  &:not(.active) td:first-child {
+    border-bottom-left-radius: rem-calc(10px);
+    border-top-left-radius: rem-calc(10px);
+  }
+
+  &:not(.active) td:last-child {
+    border-bottom-right-radius: rem-calc(10px);
+    border-top-right-radius: rem-calc(10px);
+  }
+}
+
+.headrow td.colTitle1 {
+  @include padding-left(32px);
+  padding-right: 0;
+
+  @include media-breakpoint-down(xl) {
+    order: 1;
+  }
+}
+
+.headrow td.colSpinners {
+  align-self: center;
+  padding-left: 0;
+  padding-right: 0;
+
+  @include media-breakpoint-down(xl) {
+    order: 2;
+  }
+}
+
+.headrow td.colTitle2 {
+  padding-left: 0;
+  @include padding-right(32px);
+  border-right: 1px solid $gray-700;
+
+  @include media-breakpoint-down(xl) {
+    border-right: 0;
+    order: 3;
+  }
+}
+
+.headrow td.colEmpty {
+  padding: 0;
+  width: auto;
+  display: none;
+  border-right: 1px solid $gray-700;
+
+  @include media-breakpoint-down(xl) {
+    display: block;
+    order: 4;
+  }
+
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+
+.headrow td.colApi {
+  @include padding-left(44px);
+
+  @include media-breakpoint-down(xl) {
+    @include padding-left(32px);
+    @include padding-right(32px);
+    order: 5;
+    display: flex;
+    align-items: center;
+  }
+
+  @include media-breakpoint-down(md) {
+    border-top: 1px solid $gray-700;
+    order: 6;
+    grid-column: 1 / span 5;
+  }
+
+  @media (max-width: 480px) {
+    grid-column: 1 / span 3;
+    order: 4;
+  }
+}
+
+.headrow td.colBtn {
+  padding: rem-calc(8px);
+
+  @include media-breakpoint-down(xl) {
+    display: flex;
+    align-items: center;
+    order: 6;
+  }
+
+  @include media-breakpoint-down(md) {
+    order: 5;
+  }
+
+  @media (max-width: 480px) {
+    order: 7;
+    border-top: 1px solid $gray-700;
+    grid-column: 1 / span 3;
+    border-radius: 0;
+
+    :global(.btn) {
+      width: 100%;
+
+      svg {
+        height: rem-calc(11px);
+        width: rem-calc(11px);
+      }
+    }
+  }
+}
+
+
+.headrow td.colText1 {
+  word-break: break-all;
+  @include media-breakpoint-down(xl) {
+    @include padding-left(32px);
+    @include padding-right(32px);
+    border-top: 1px solid $gray-700;
+    grid-column: 1 / span 4;
+    order: 7;
+  }
+
+  @include media-breakpoint-down(md) {
+    grid-column: 1 / span 5;
+  }
+
+  @media (max-width: 480px) {
+    order: 5;
+  }
+}
+
+
+.headrow td.colText2 {
+  @include media-breakpoint-down(xl) {
+    @include padding-left(44px);
+    border-top: 1px solid $gray-700;
+    grid-column: 5 / span 2;
+    order: 8;
+  }
+
+  @include media-breakpoint-down(md) {
+    @include padding-left(32px);
+    @include padding-right(32px);
+    grid-column: 1 / span 5;
+  }
+
+  @media (max-width: 480px) {
+    order: 6;
+  }
+}
+
+.spinners {
+  display: block;
+  text-align: center;
+  width: rem-calc(30px);
+
+  svg {
+    height: rem-calc(18px);
+    width: rem-calc(4px);
+  }
+}
+
+.badge {
+  background-color: $danger;
+  border-radius: rem-calc(4px);
+  color: $gray-900;
+  display: inline-block;
+  font-weight: 700;
+  overflow: hidden;
+  padding: rem-calc(7px 26px);
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+  }
+}
+
+.btnActive {
+  svg {
+    transform: rotate(180deg);
+  }
+}

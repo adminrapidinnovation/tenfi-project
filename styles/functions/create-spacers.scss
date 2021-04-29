@@ -1,0 +1,11 @@
+@function create-spacers($step, $max, $min: 1) {
+  $result: ();
+
+  @for $i from $min through $max {
+    @if $i % $step == 0 {
+      $result: map-merge($result, ($i: rem-calc($i)));
+    }
+  }
+
+  @return $result;
+}

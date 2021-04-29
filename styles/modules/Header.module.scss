@@ -1,0 +1,38 @@
+.header {
+  padding-top: rem-calc(26px);
+  position: relative;
+}
+
+.row {
+  @include margin(0 -43px);
+}
+
+.left {
+  margin-left: wrap-calc(48px, $wrapper-inner-width + 76px);
+}
+
+.right {
+  padding-top: rem-calc(15px);
+}
+
+.col {
+  @include padding-left(43px);
+  @include padding-right(43px);
+}
+
+.logo {
+  color: $danger !important;
+  display: inline-block;
+  height: rem-calc(94px);
+  width: rem-calc(75px);
+
+  @include media-breakpoint-down(sm) {
+    width: rem-calc(58px);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}

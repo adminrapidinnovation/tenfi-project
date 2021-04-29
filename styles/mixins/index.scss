@@ -1,0 +1,5 @@
+@import "fs-calc";
+
+@mixin appBtn($color: #fff) {
+  color: $color !important;
+}

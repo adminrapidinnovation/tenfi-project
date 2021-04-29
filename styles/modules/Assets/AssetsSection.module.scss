@@ -1,0 +1,54 @@
+.el {
+  @include padding-left($page-spacer-x);
+  @include padding-right($page-spacer-x);
+  padding-top: rem-calc(60px);
+  padding-bottom: rem-calc(36px);
+  background-color: $gray-800;
+  border-radius: rem-calc(14px);
+  color: #fff;
+
+  @media (max-width: 480px) {
+    padding: 0;
+    background-color: transparent;
+  }
+}
+
+.row {
+  margin: rem-calc(-12px) wrap-calc(-$layt-grid-gutter / 2, $wrapper-inner-width - $page-spacer-x * 2 - 32px);
+  @include padding-bottom(25px);
+}
+
+.col {
+  padding: rem-calc(12px) wrap-calc($layt-grid-gutter / 2, ($wrapper-inner-width - $page-spacer-x * 2 - 32px) + $layt-grid-gutter)
+}
+
+.left {
+  @include padding-left(32px);
+
+  @include media-breakpoint-down(md) {
+    padding-left: 0;
+  }
+}
+
+.right {
+  padding-top: rem-calc(10px);
+}
+
+.title {
+  @include font-size(24px);
+  font-family: $secondary-font-family;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: rem-calc(20px);
+}
+
+.summ {
+  @include font-size(14px);
+  line-height: (16 / 14);
+  margin-bottom: 0;
+
+  strong {
+    display: block;
+    margin-bottom: rem-calc(2px);
+  }
+}

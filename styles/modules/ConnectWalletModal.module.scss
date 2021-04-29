@@ -1,0 +1,42 @@
+.row {
+  margin: rem-calc(-3px);
+}
+
+.col {
+  padding: rem-calc(3px);
+}
+
+.item {
+  background: linear-gradient(90deg, rgba(#0F8B06, 0.29), rgba(#A51E8C, 0.29));
+  padding: 1px;
+  border-radius: rem-calc(5px);
+  min-height: 100%;
+  display: flex;
+}
+
+.inner {
+  @include font-size(18px);
+  align-items: center;
+  background-color: #fff;
+  color: $gray-900;
+  border-radius: rem-calc(4px);
+  display: flex;
+  line-height: (20 / 18);
+  padding: rem-calc(14px 20px);
+  text-decoration: none;
+  transition: $transition-base;
+  width: 100%;
+
+  &:hover {
+    background-color: transparent;
+    color: $gray-900;
+  }
+}
+
+.thumb {
+  height: rem-calc(34px);
+  margin-right: rem-calc(22px);
+  position: relative;
+  flex-shrink: 0;
+  width: rem-calc(34px);
+}

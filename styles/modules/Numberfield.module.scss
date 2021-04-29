@@ -1,0 +1,15 @@
+.btn {
+  background-color: rgba(#fff, 0.08);
+  border-radius: rem-calc(4px);
+  border: 0;
+  padding: rem-calc(9px 11px);
+  transition: box-shadow 150ms ease-in-out, background-color 150ms ease-in-out;
+
+  &:hover {
+    background-color: rgba(#fff, 0.1);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgb(7 165 255 / 25%);
+  }
+}

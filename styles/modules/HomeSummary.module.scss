@@ -1,0 +1,48 @@
+.el {
+  @include font-size(24px);
+  display: flex;
+  min-height: 100%;
+  padding-top: 20 / 24 * 1em;
+  padding-bottom: rem-calc(70px);
+
+  @include media-breakpoint-down(md) {
+    padding-bottom: wrap-calc(64px, (($wrapper-inner-width - $page-spacer-x * 2) / 2) - $layt-grid-gutter / 2);
+  }
+}
+
+.inner {
+  @include padding-left(38px);
+  @include padding-right(38px);
+  //align-items: flex-start;
+  border-radius: rem-calc(5px);
+  //display: flex;
+  //flex-direction: column;
+  padding-bottom: rem-calc(28px);
+  width: 100%;
+}
+
+.header {
+  font-size: 1em;
+  margin-top: -20 / 24 * 1em;
+  margin-bottom: rem-calc(28px);
+}
+
+.title {
+  font-size: 1em;
+  border-radius: rem-calc(4px);
+  color: black;
+  font-family: $secondary-font-family;
+  font-weight: 600;
+  padding: 6 / 24 * 1em 26 / 24 * 1em;
+  max-width: 100%;
+  margin-bottom: 0;
+}
+
+.item {
+  flex-shrink: 1;
+  @include font-size(18px);
+
+  @include media-breakpoint-up(md) {
+    flex-grow: 1;
+  }
+}

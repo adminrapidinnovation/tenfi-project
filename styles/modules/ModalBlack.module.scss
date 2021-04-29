@@ -1,0 +1,107 @@
+.el {
+  background-color: $gray-800;
+  color: #fff;
+  left: 50%;
+  border-radius: rem-calc(14px);
+  max-height: calc(100% - #{rem-calc(40px)});
+  max-width: rem-calc(500px);
+  overflow: auto;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - #{rem-calc(40px)});
+
+  &.sm {
+    max-width: rem-calc(390px);
+  }
+
+  > p {
+    @include font-size(14px);
+    line-height: (16 / 14);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &:global(.display-appear), &:global(.display-exit-active) {
+    transform: translate(-50%, calc(-50% - 40px));
+    opacity: 0;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit) {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit-active) {
+    transition: all 200ms ease-in-out;
+  }
+}
+
+.inner {
+  padding: 0 wrap-calc(50px, 500px) wrap-calc(50px, 500px);
+}
+
+.close {
+  align-items: center;
+  background: transparent;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  color: #fff;
+  display: flex;
+  height: rem-calc(20px);
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: $transition-base;
+  width: rem-calc(20px);
+
+  &:hover {
+    border-color: $danger;
+    color: $danger;
+  }
+
+  svg {
+    display: block;
+    height: rem-calc(8px);
+    width: rem-calc(8px);
+  }
+}
+
+.header {
+  border-bottom: 1px dashed #21283A;
+  margin-bottom: rem-calc(34px);
+  padding: wrap-calc(42px, 500px - 100px) 0;
+  position: relative;
+}
+
+.title {
+  @include font-size(16px);
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.backdrop {
+  background-color: rgba(#000, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vw;
+
+  &:global(.display-appear), &:global(.display-exit-active) {
+    opacity: 0;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit) {
+    opacity: 1;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit-active) {
+    transition: all 200ms ease-in-out;
+  }
+}

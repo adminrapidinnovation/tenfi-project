@@ -1,0 +1,12 @@
+<svg id="alpha-finance-lab-alpha-logo" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <g id="Group-3">
+    <path id="Fill-1" d="M20,0A20,20,0,1,0,40,20,20.007,20.007,0,0,0,20,0" fill="#29b2ff"/>
+  </g>
+  <path id="Fill-4" d="M9.167,0,0,12H1.873L3.866,9.373h6.377V7.882H4.982L11,0Z" transform="translate(5 14)" fill="#fff"/>
+  <path id="Fill-6" d="M11,12,1.833,0H0L6.018,7.882H.757v1.49H7.134L9.127,12Z" transform="translate(24 14)" fill="#fff"/>
+  <path id="Fill-8" d="M0,19H1V0H0Z" transform="translate(20 7)" fill="#fff"/>
+  <path id="Fill-15" d="M0,1H6V0H0Z" transform="translate(9 22)" fill="#fff"/>
+  <path id="Stroke-16" d="M0,1H6V0H0Z" transform="translate(9 22)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="1.492"/>
+  <path id="Fill-17" d="M0,1H6V0H0Z" transform="translate(25 22)" fill="#fff"/>
+  <path id="Stroke-18" d="M0,1H6V0H0Z" transform="translate(25 22)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="1.492"/>
+</svg>

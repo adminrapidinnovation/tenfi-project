@@ -1,0 +1,80 @@
+@import "~bootstrap/scss/buttons";
+
+.btn {
+  letter-spacing: 1 / 14 * 1em;
+  text-transform: uppercase;
+
+  &.is-loading {
+    @keyframes spinLoader {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(359deg);
+      }
+    }
+
+    color: transparent !important;
+    position: relative;
+    pointer-events: none;
+
+    &:after {
+      animation: spinLoader 500ms infinite linear;
+      border: 1px solid #000;
+      border-radius: 50%;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      content: "";
+      display: block;
+      height: 1em;
+      position: absolute;
+      left: calc(50% - (1em / 2));
+      top: calc(50% - (1em / 2));
+      width: 1em;
+    }
+  }
+
+  &-icon {
+    align-items: center;
+    border-radius: rem-calc(4px);
+    display: flex;
+    height: rem-calc(45px);
+    justify-content: center;
+    line-height: 1;
+    padding: rem-calc(16px);
+    width: rem-calc(45px);
+
+    svg {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  &-outline-white {
+    border-color: #979797;
+  }
+}
+
+span.btn {
+  cursor: initial;
+}
+
+@each $color-key, $color-value in $theme-colors {
+  span.btn-#{$color-key}:hover {
+    background-color: $color-value;
+    border-color: $color-value;
+  }
+}
+
+span.btn.disabled {
+  opacity: 1;
+}
+
+span.btn:focus, span.btn.focused {
+  box-shadow: none;
+}
+
+.btn-info {
+  @include appBtn();
+}

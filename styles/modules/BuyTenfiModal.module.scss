@@ -1,0 +1,20 @@
+.footer {
+  margin-top: rem-calc(40px);
+  text-align: center;
+
+  :global(.btn){
+    max-width: rem-calc(210px);
+    width: 100%;
+  }
+}
+
+.svg {
+  display: block;
+  margin: rem-calc(18px 0 20px);
+  text-align: center;
+
+  svg {
+    height: rem-calc(38px);
+    width: rem-calc(22px);
+  }
+}

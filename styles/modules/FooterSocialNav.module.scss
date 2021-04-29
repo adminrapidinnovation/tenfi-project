@@ -1,0 +1,31 @@
+.nav {
+  margin: 0 wrap-calc(-50px) rem-calc(-12px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: rem-calc(40px);
+}
+
+.link {
+  @include font-size(18px);
+  color: $primary;
+  display: block;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: (21 / 18);
+  margin: 0 wrap-calc(50px, $wrapper-inner-width + 100px) rem-calc(12px);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &:hover {
+    color: darken($primary, 15%);
+  }
+
+  svg {
+    @include margin-right(20px);
+    fill: white;
+    height: rem-calc(38px);
+    width: rem-calc(38px);
+  }
+}

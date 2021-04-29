@@ -1,0 +1,36 @@
+@import "~bootstrap/scss/forms";
+
+.form-group {
+  margin-bottom: rem-calc(20px);
+
+  > label {
+    display: block;
+  }
+}
+
+.form-label {
+  line-height: (17 / 14);
+}
+
+.form-control {
+  &:focus::placeholder {
+    opacity: 0.5;
+  }
+
+  &[type="number"] {
+    appearance: none;
+  }
+}
+
+.input-group-text {
+  @include font-size(12px);
+  letter-spacing: 0.01em;
+  line-height: 1;
+  padding: rem-calc(8px);
+
+  > span {
+    @include border-radius($input-border-radius);
+    background-color: rgba(white, 0.08);
+    padding: rem-calc(9px 12px);
+  }
+}

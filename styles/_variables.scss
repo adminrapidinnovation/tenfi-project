@@ -1,0 +1,10 @@
+$rfs-base-value: 12px;
+$rfs-breakpoint: $wrapper-width;
+
+$layt-grid-gutter: 94px;
+$page-spacer-x: 42px;
+$secondary-font-family: 'Roboto', sans-serif;
+
+$spacers: map-merge(create-spacers(2, 200), (
+  0: 0,
+));

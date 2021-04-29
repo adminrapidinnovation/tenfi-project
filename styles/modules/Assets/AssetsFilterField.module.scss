@@ -1,0 +1,21 @@
+.el :global(.form-control) {
+  padding-right: rem-calc(62px);
+}
+
+.btn {
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+  height: 100%;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: center;
+  width: rem-calc(62px);
+
+  svg {
+    width: rem-calc(18px);
+    height: rem-calc(18px);
+  }
+}

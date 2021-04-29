@@ -1,0 +1,19 @@
+.el {
+  @include font-size(18px);
+  align-items: center;
+  line-height: (21 / 18);
+  text-transform: uppercase;
+}
+
+.thumb {
+  height: rem-calc(48px);
+  margin-right: rem-calc(12px);
+  position: relative;
+  flex-shrink: 0;
+  width: rem-calc(40px);
+}
+
+.thumbSm {
+  height: rem-calc(30px);
+  width: rem-calc(30px);
+}

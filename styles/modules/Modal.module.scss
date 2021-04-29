@@ -1,0 +1,107 @@
+.el {
+  background-color: #fff;
+  border-radius: rem-calc(5px);
+  color: $gray-900;
+  left: 50%;
+  max-height: calc(100% - #{rem-calc(40px)});
+  max-width: rem-calc(680px);
+  overflow: auto;
+  padding: rem-calc(58px) 0 rem-calc(54px);
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - #{rem-calc(40px)});
+
+  &.sm {
+    max-width: rem-calc(390px);
+  }
+
+  > p {
+    @include font-size(14px);
+    line-height: (16 / 14);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &:global(.display-appear), &:global(.display-exit-active) {
+    transform: translate(-50%, calc(-50% - 40px));
+    opacity: 0;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit) {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit-active) {
+    transition: all 200ms ease-in-out;
+  }
+}
+
+.inner {
+  padding-left: wrap-calc(54px, 680px);
+  padding-right: wrap-calc(54px, 680px);
+}
+
+.el.sm .inner {
+  padding-left: wrap-calc(54px, 390px);
+  padding-right: wrap-calc(54px, 390px);
+}
+
+.close {
+  align-items: center;
+  background: transparent;
+  border-radius: 50%;
+  border: 2px solid $gray-900;
+  display: flex;
+  height: rem-calc(20px);
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: rem-calc(60px / 2);
+  top: rem-calc(28px);
+  transform: translate(50%, -50%);
+  transition: $transition-base;
+  width: rem-calc(20px);
+
+  &:hover {
+    background-color: $gray-900;
+    color: #fff;
+  }
+
+  svg {
+    display: block;
+    height: rem-calc(8px);
+    width: rem-calc(8px);
+  }
+}
+
+.title {
+  @include font-size(24px);
+  font-family: $secondary-font-family;
+  font-weight: 600;
+  margin-bottom: rem-calc(18px);
+}
+
+.backdrop {
+  background-color: rgba(#000, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vw;
+
+  &:global(.display-appear), &:global(.display-exit-active) {
+    opacity: 0;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit) {
+    opacity: 1;
+  }
+
+  &:global(.display-appear-active), &:global(.display-exit-active) {
+    transition: all 200ms ease-in-out;
+  }
+}

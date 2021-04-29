@@ -1,0 +1,26 @@
+.el {
+  background-color: rgba(#fff, 0.08);
+  margin-left: wrap-calc(-50px, 400px);
+  padding: rem-calc(27px) wrap-calc(50px, 500px) rem-calc(23px);
+  width: 100% + wrap-calc(100px, 400px);
+}
+
+.title {
+  @include font-size(16px);
+  font-weight: 400;
+  margin-top: rem-calc(25px);
+  margin-bottom: rem-calc(38px);
+  text-align: center;
+}
+
+.item {
+  font-weight: 700;
+  text-align: center;
+}
+
+.term {
+  @include font-size(14px);
+  display: block;
+  font-weight: 400;
+  margin-top: rem-calc(7px);
+}

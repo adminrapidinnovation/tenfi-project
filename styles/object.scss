@@ -1,0 +1,40 @@
+.object {
+  display: block;
+  position: relative;
+
+  &--fill {
+    overflow: hidden;
+  }
+
+  &--fill,
+  &__fit {
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  &--center {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &--fixed {
+    position: fixed;
+  }
+
+  &__fit {
+    &--cover {
+      object-fit: cover;
+      font-family: 'object-fit: cover';
+    }
+
+    &--contain {
+      object-fit: contain;
+      font-family: 'object-fit: contain';
+    }
+  }
+}

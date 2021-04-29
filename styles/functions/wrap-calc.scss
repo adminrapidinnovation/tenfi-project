@@ -1,0 +1,25 @@
+// calculate padding, width, etc. according to wrapper__inner width without padding
+// improve: extract return as function
+
+$wrapper-padding: 60px;
+$wrapper-padding-sm: 30px;
+$wrapper-inner-width: 1230px;
+$wrapper-width: $wrapper-inner-width + ($wrapper-padding * 2);
+
+@function wrap-calc($values, $container-width: $wrapper-width - ($wrapper-padding * 2)) {
+  $newValues: ();
+  $count: length($values);
+
+  @if $count == 1 {
+    @return (strip-unit($values) * 100%) / strip-unit($container-width);
+  }
+
+  @for $i from 1 through $count {
+    $newValues: append(
+        $newValues,
+        (strip-unit(nth($values, $i)) * 100) / strip-unit($container-width)
+    );
+  }
+
+  @return $newValues;
+}

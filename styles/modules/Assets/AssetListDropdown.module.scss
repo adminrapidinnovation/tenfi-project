@@ -1,0 +1,29 @@
+.el {
+  @include font-size(14px);
+  align-items: center;
+  border-radius: rem-calc(6px 6px 2px 2px);
+  color: $gray-900;
+  display: inline-flex;
+  line-height: (16 / 14);
+  max-width: 100%;
+  min-height: 100%;
+  transform: translateY(#{rem-calc(8px)});
+  margin-top: rem-calc(-8px);
+  padding: rem-calc(5px) rfs-value(28px);
+
+  @include media-breakpoint-down(xl) {
+    transform: translateY(0);
+  }
+
+  @include media-breakpoint-down(sm) {
+    @include font-size(11px);
+    padding: rem-calc(5px) rfs-value(10px);
+  }
+
+  svg {
+    flex-shrink: 0;
+    margin-left: 12 / 14 * 1em;
+    height: rem-calc(6px);
+    width: rem-calc(6px);
+  }
+}

@@ -1,0 +1,43 @@
+.el {
+  @include font-size(14px);
+  background-color: rgba(#008EFE, 0.15);
+  letter-spacing: 1 / 14 * 1em;
+  line-height: (18 / 14);
+  //margin-top: rem-calc(8px);
+  padding: rem-calc(8px 0);
+  text-align: center;
+  z-index: 1;
+
+  a {
+    text-decoration: none;
+  }
+
+  strong {
+    text-transform: uppercase;
+  }
+}
+
+.infoSvg svg {
+  align-self: start;
+  height: rem-calc(20px);
+  margin-right: rem-calc(14px);
+  width: rem-calc(20px);
+}
+
+.link {
+  background-color: transparent;
+  border: 0;
+  color: $danger;
+  padding: 0;
+  transition: $transition-base;
+
+  &:hover {
+    color: $link-hover-color;
+  }
+
+  svg {
+    height: rem-calc(5px);
+    margin-left: rem-calc(4px);
+    width: rem-calc(9px);
+  }
+}

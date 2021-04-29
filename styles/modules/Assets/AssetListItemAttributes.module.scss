@@ -1,0 +1,19 @@
+.title {
+  @include font-size(14px);
+  font-weight: 700;
+  line-height: (17 / 14);
+  margin-bottom: rem-calc(6px);
+}
+
+.list {
+  @include font-size(14px);
+  line-height: (16 / 14);
+
+  a {
+    color: $white;
+
+    &:hover {
+      color: $danger;
+    }
+  }
+}
