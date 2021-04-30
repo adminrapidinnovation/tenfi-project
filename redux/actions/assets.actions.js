@@ -1,9 +1,9 @@
 import { FILTER_ASSETS_LIST, SET_ASSETS } from "./action.config";
 
-export const setAssets = (assets) => {
+export const setAssets = (assetsArray) => {
   return {
     type: SET_ASSETS,
-    data: assets,
+    data: assetsArray,
   };
 };
 

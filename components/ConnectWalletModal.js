@@ -5,8 +5,9 @@ import { BscConnector } from "@binance-chain/bsc-connector";
 import Web3 from "web3";
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
+import { connect } from "react-redux";
 
-export default function ConnectWalletModal({ onClose }) {
+function ConnectWalletModal({ onClose, setUserData }) {
   const items = [
     {
       type: "metamask",
@@ -42,6 +43,7 @@ export default function ConnectWalletModal({ onClose }) {
           const coinbase = await web3?.eth.getCoinbase();
           const publicAddress = coinbase.toLowerCase();
           console.log(publicAddress);
+          setUserData(publicAddress, true);
         } catch (error) {
           window.alert("You need to allow MetaMask.");
           return;
@@ -149,3 +151,18 @@ export default function ConnectWalletModal({ onClose }) {
     </Modal>
   );
 }
+
+const mapStatesToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserData: (userData) => dispatch(isLoggedIn(userData)),
+  };
+};
+
+export default connect(
+  mapStatesToProps,
+  mapDispatchToProps
+)(ConnectWalletModal);

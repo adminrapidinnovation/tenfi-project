@@ -5,6 +5,64 @@ import AssetsListDropdown from "./AssetListDropdown";
 import AssetListItemLogoName from "./AssetListItemLogoName";
 import styles from "../../styles/modules/Assets/AssetList.module.scss";
 import { connect } from "react-redux";
+import DownIcon from "assets/icons/down.svg";
+import BUSDIcon from "assets/icons/busd.svg";
+import USDTIcon from "assets/icons/USDT.png";
+import FourBeltIcon from "assets/icons/4belt-icon.png";
+import AQUAIcon from "assets/icons/blue-icon.svg";
+import BNBIcon from "assets/icons/binance-chai.svg";
+
+const renderIcon = (rowId, token) => {
+  const title = token.split("-");
+  if (rowId === 0) {
+    return (
+      <ImageGroup
+        firstImg={BUSDIcon}
+        firstTitle={title[0]}
+        secondImg={USDTIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 1) {
+    return <ImageGroup firstImg={FourBeltIcon} firstTitle={title[0]} />;
+  }
+  if (rowId === 2) {
+    return (
+      <ImageGroup
+        firstImg={AQUAIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 3) {
+    return <ImageGroup firstImg={AQUAIcon} firstTitle={title[0]} />;
+  }
+};
+
+const ImageGroup = ({ firstImg, firstTitle, secondImg, secondTitle }) => {
+  return (
+    <>
+      <td className={styles.colTitle1}>
+        <AssetListItemLogoName title={firstTitle} src={firstImg} />
+      </td>
+      <td className={styles.colSpinners}>
+        {secondImg && (
+          <span className={styles.spinners}>
+            <SpinnersIcon />
+          </span>
+        )}
+      </td>
+      <td className={styles.colTitle2}>
+        {secondImg && (
+          <AssetListItemLogoName title={secondTitle} src={secondImg} />
+        )}
+      </td>
+    </>
+  );
+};
 
 function AssetList(props) {
   const { items } = props;
@@ -37,8 +95,12 @@ function AssetList(props) {
                 index === activeIndex ? styles.active : ""
               }`}
             >
-              <td className={styles.colTitle1}>
-                <AssetListItemLogoName title={item.title} src={item.src} />
+              {/* <td className={styles.colTitle1}>
+                <AssetListItemLogoName
+                  title={item.title}
+                  // src={renderIcon(item.id)[0]}
+                  src={item.src}
+                />
               </td>
               <td className={styles.colSpinners}>
                 {item.title2 && (
@@ -54,12 +116,13 @@ function AssetList(props) {
                     src={require("assets/images/binance-coin-bnb-logo.svg")}
                   />
                 )}
-              </td>
+              </td> */}
+              {renderIcon(item.id, item.token)}
               <td className={styles.colEmpty}>&nbsp;</td>
               <td className={styles.colApi}>
-                <span className={styles.badge}>APY {item.apy}</span>
+                <span className={styles.badge}>APY {item.totalApy}</span>
               </td>
-              <td className={styles.colText1}>TVL {item.tvl}</td>
+              <td className={styles.colText1}>TVL {item.tokenTvl}</td>
               <td className={styles.colText2}>TENFI Pending: {item.earned}</td>
               <td className={styles.colBtn}>
                 <button
@@ -91,7 +154,7 @@ function AssetList(props) {
 
 const mapStatesToProps = (state) => {
   return {
-    items: state.assets.assets,
+    items: state.assets.filteredAssets,
   };
 };
 

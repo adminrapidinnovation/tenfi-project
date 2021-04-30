@@ -87,6 +87,7 @@ export const convertToEther = (totalAmount) => {
 };
 
 export const handleDeposit = async (poolId, amount) => {
+  console.log(poolId, amount);
   try {
     const web3 = new Web3(window.ethereum);
     const depositAmount = parseFloat(amount);
@@ -113,6 +114,7 @@ export const handleDeposit = async (poolId, amount) => {
 };
 
 export const handleWithdraw = async (poolId, amount) => {
+  console.log(poolId, amount);
   const web3 = new Web3(window.ethereum);
   const withdrawAmount = parseFloat(amount);
   const coinbase = await web3.eth.getCoinbase();
@@ -399,7 +401,9 @@ export const harvestAllLpTokens = async () => {
 
 export const getPoolLength = async () => {
   const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
+  console.log("aquafarm instance", aquafarmInstance);
   const poolLength = await aquafarmInstance.methods.poolLength().call();
+  console.log("pool length", poolLength);
   return poolLength;
 };
 

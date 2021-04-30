@@ -3,16 +3,18 @@ import {
   AUTH_SUCCESS,
   AUTH_FAIL,
   LOGOUT,
+  IS_LOGGED_IN,
 } from "../actions/action.config";
 
 const initialState = {
+  isLoggedIn: false,
   authLoading: false,
   isLoaded: false,
-  userInfo: "",
+  userInfo: null,
 };
 
 export const userReducer = (state = initialState, action) => {
-  const { type, payload } = action;
+  const { type, data } = action;
   switch (type) {
     case AUTH_START:
       return {
@@ -21,24 +23,25 @@ export const userReducer = (state = initialState, action) => {
       };
 
     case AUTH_SUCCESS:
-      localStorage.setItem("token", payload.token);
       return {
         ...state,
-        loading: false,
-        loggedIn: true,
-        isLoaded: true,
         authLoading: false,
-        userInfo: payload.userInfo,
+        userInfo: data,
+      };
+
+    case IS_LOGGED_IN:
+      return {
+        ...state,
+        isLoggedIn: data.isLoggedIn,
+        userInfo: data.userInfo,
       };
     case AUTH_FAIL:
     case LOGOUT:
-      localStorage.removeItem("token");
       return {
         ...state,
-        loading: false,
-        loggedIn: false,
-        isLoaded: true,
+        isLoggedIn: false,
         authLoading: false,
+        userInfo: null,
       };
     default:
       return state;

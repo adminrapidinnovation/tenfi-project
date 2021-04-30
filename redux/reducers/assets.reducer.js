@@ -1,8 +1,8 @@
-import assets from "data/assets";
 import { FILTER_ASSETS_LIST, SET_ASSETS } from "redux/actions/action.config";
 
 const initialState = {
-  assets: assets,
+  assets: [],
+  filteredAssets: [],
 };
 
 export const assetsReducer = (state = initialState, action) => {
@@ -11,19 +11,20 @@ export const assetsReducer = (state = initialState, action) => {
       return {
         ...state,
         assets: action.data,
+        filteredAssets: action.data,
       };
 
     case FILTER_ASSETS_LIST:
       const value = action.data;
 
-      if (value === "") return { ...state, assets: assets };
+      if (value === "") return { ...state, filteredAssets: state.assets };
 
-      let filteredAssets = assets.filter((item) =>
+      let filteredAssets = state.assets.filter((item) =>
         item.title.toLowerCase().includes(value.toLowerCase())
       );
       return {
         ...state,
-        assets: filteredAssets,
+        filteredAssets,
       };
 
     default:

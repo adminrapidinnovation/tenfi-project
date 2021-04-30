@@ -6,7 +6,11 @@ import AssetListItemAttributes from "./AssetListItemAttributes";
 import AssetListItemDetails from "./AssetListItemDetails";
 import NumberField from "../NumberField";
 import styles from "../../styles/modules/Assets/AssetListItemBody.module.scss";
-import { handleDeposit, handleWithdraw } from "block-chain/blockChainMethods";
+import {
+  handleDeposit,
+  handleWithdraw,
+  returnPoolData,
+} from "block-chain/blockChainMethods";
 
 export default function AssetListItemBody(props) {
   const details = [
@@ -45,11 +49,9 @@ export default function AssetListItemBody(props) {
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
 
-  const depositHandler = () => {
+  const depositHandler = async () => {
     try {
-      console.log("deposit");
-
-      handleDeposit(1, depositAmount);
+      handleDeposit(props.item.id, depositAmount);
     } catch (err) {
       console.log(err);
     }
@@ -57,13 +59,12 @@ export default function AssetListItemBody(props) {
 
   const withdrawHandler = () => {
     try {
-      console.log("wothdraw");
-
-      handleWithdraw(1, withdrawAmount);
+      handleWithdraw(props.item.id, withdrawAmount);
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <>
       <div className={styles.el}>
