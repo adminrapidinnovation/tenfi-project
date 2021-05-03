@@ -1,40 +1,33 @@
 import {
-  AUTH_START,
-  AUTH_SUCCESS,
-  AUTH_FAIL,
-  LOGOUT,
-  IS_LOGGED_IN,
+  CONNECT_WALLET,
+  DISCONNECT_WALLET,
+  POOL_DATA_LOADING,
+  UPDATE_POOL_DATA,
 } from "./action.config";
 
-export const authStart = () => {
+export const connectWallet = (data) => {
   return {
-    type: AUTH_START,
+    type: CONNECT_WALLET,
+    payload: data,
   };
 };
 
-export const authSuccess = (authData) => {
+export const disconnectWallet = () => {
   return {
-    type: AUTH_SUCCESS,
-    data: authData,
+    type: DISCONNECT_WALLET,
   };
 };
 
-export const authFail = (errorData) => {
+export const setPoolDataLoading = (loadingStatus) => {
   return {
-    type: AUTH_FAIL,
-    data: errorData,
+    type: POOL_DATA_LOADING,
+    payload: loadingStatus,
   };
 };
 
-export const logout = () => {
+export const updatePoolData = (data) => {
   return {
-    type: LOGOUT,
-  };
-};
-
-export const isLoggedIn = (userInfo, isLoggedIn) => {
-  return {
-    type: IS_LOGGED_IN,
-    data: { userInfo, isLoggedIn },
+    type: UPDATE_POOL_DATA,
+    payload: data,
   };
 };

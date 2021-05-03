@@ -1,7 +1,6 @@
-import { createStore, compose } from "redux";
+import { createStore } from "redux";
+import rootReducer from "./reducers";
 
-import rootReducer from "../redux/reducers";
-
-export default (preloadState, options) => {
+export default (preloadState) => {
   return createStore(rootReducer, preloadState);
 };

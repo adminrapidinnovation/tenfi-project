@@ -22,7 +22,7 @@ function AssetsFilterField(props) {
           id="exampleFormControlInput1"
           placeholder="Filter by Token, Protocol...."
         />
-        <button className={styles.btn} onClick={handleFilter} type="button">
+        <button className={styles.btn} type="button">
           <SearchIcon />
         </button>
       </div>

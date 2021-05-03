@@ -1,52 +1,51 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { connectWallet, disconnectWallet } from "redux/actions/user.actions";
 import styles from "../styles/modules/ConnectWalletModal.module.scss";
 import Modal from "./Modal";
 import { BscConnector } from "@binance-chain/bsc-connector";
-import Web3 from "web3";
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
-import { connect } from "react-redux";
+import { connectToMetamask } from "block-chain/BlockChainMethods";
 
-function ConnectWalletModal({ onClose, setUserData }) {
-  const items = [
-    {
-      type: "metamask",
-      src: require("assets/images/Metamask-1.svg"),
-      href: "#",
-      title: "MetaMask",
-    },
-    {
-      type: "bsc",
-      src: require("assets/images/BinanceChainWallet.png"),
-      title: "Binance Chain Wallet",
-    },
+const items = [
+  {
+    type: "metamask",
+    src: require("assets/images/Metamask-1.svg"),
+    href: "#",
+    title: "MetaMask",
+  },
+  {
+    type: "bsc",
+    src: require("assets/images/BinanceChainWallet.png"),
+    title: "Binance Chain Wallet",
+  },
 
-    {
-      type: "walletConnect",
-      src: require("assets/images/walletconnect-circle-blue.svg"),
-      href: "#",
-      title: "Wallet Connect",
-    },
-  ];
+  {
+    type: "walletConnect",
+    src: require("assets/images/walletconnect-circle-blue.svg"),
+    href: "#",
+    title: "Wallet Connect",
+  },
+];
 
+const ConnectWalletModal = ({ onClose, setUserData }) => {
+  const dispatch = useDispatch();
   const handleWalletConnect = async (type) => {
     switch (type) {
       // ////////////////////////////////////////////////////////
       case "metamask":
-        if (!window.ethereum) {
-          window.alert("Please install MetaMask first.");
-          return;
-        }
         try {
-          await window.ethereum.enable();
-          web3 = new Web3(window.ethereum);
-          const coinbase = await web3?.eth.getCoinbase();
-          const publicAddress = coinbase.toLowerCase();
-          console.log(publicAddress);
-          setUserData(publicAddress, true);
+          const accounts = await connectToMetamask();
+          if (!!accounts && accounts.length > 0) {
+            dispatch(connectWallet(accounts[0]));
+          } else {
+            dispatch(disconnectWallet());
+          }
         } catch (error) {
-          window.alert("You need to allow MetaMask.");
-          return;
+          dispatch(disconnectWallet());
+        } finally {
+          onClose();
         }
         break;
       // ///////////////////////////////////////////////////////////////////////
@@ -58,10 +57,15 @@ function ConnectWalletModal({ onClose, setUserData }) {
         try {
           await bsc.activate();
           const accounts = await bsc.getAccount();
-          console.log(accounts);
+          if (accounts) {
+            dispatch(connectEthWallet(accounts));
+          } else {
+            dispatch(disconnectWallet());
+          }
         } catch (error) {
-          console.log("bsc error-->", error);
+          dispatch(disconnectWallet());
         } finally {
+          onClose();
         }
         break;
       // ////////////////////////////////////////////////////////////
@@ -114,6 +118,11 @@ function ConnectWalletModal({ onClose, setUserData }) {
     }
   };
 
+  const handleDeactivate = () => {
+    dispatch(disconnectWallet());
+    onClose();
+  };
+
   return (
     <Modal onClose={onClose} sm>
       <div className={`row ${styles.row}`}>
@@ -139,7 +148,10 @@ function ConnectWalletModal({ onClose, setUserData }) {
             </div>
           </div>
         ))}
-        <div className={`col-12 d-grid ${styles.col}`}>
+        <div
+          className={`col-12 d-grid ${styles.col}`}
+          onClick={() => handleDeactivate()}
+        >
           <a
             href="#"
             className="btn btn-info d-inline-flex align-items-center justify-content-center"
@@ -150,19 +162,6 @@ function ConnectWalletModal({ onClose, setUserData }) {
       </div>
     </Modal>
   );
-}
-
-const mapStatesToProps = (state) => {
-  return {};
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUserData: (userData) => dispatch(isLoggedIn(userData)),
-  };
-};
-
-export default connect(
-  mapStatesToProps,
-  mapDispatchToProps
-)(ConnectWalletModal);
+export default ConnectWalletModal;

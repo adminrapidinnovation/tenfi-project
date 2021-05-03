@@ -14,6 +14,9 @@
 .right {
   padding-top: rem-calc(15px);
 }
+.connectBtn {
+  max-width: 200px;
+}
 
 .col {
   @include padding-left(43px);

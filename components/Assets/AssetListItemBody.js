@@ -1,18 +1,15 @@
 import React, { useState } from "react";
-
+import { useSelector } from "react-redux";
 import BuyTenfiModal from "../BuyTenfiModal";
 import AddLiquidityModal from "../AddLiquidityModal";
 import AssetListItemAttributes from "./AssetListItemAttributes";
 import AssetListItemDetails from "./AssetListItemDetails";
 import NumberField from "../NumberField";
-import styles from "../../styles/modules/Assets/AssetListItemBody.module.scss";
-import {
-  handleDeposit,
-  handleWithdraw,
-  returnPoolData,
-} from "block-chain/blockChainMethods";
+import styles from "styles/modules/Assets/AssetListItemBody.module.scss";
+import { handleDeposit, handleWithdraw } from "block-chain/BlockChainMethods";
 
-export default function AssetListItemBody(props) {
+const AssetListItemBody = (props) => {
+  const selector = useSelector((state) => state);
   const details = [
     {
       term: "Asset",
@@ -50,18 +47,24 @@ export default function AssetListItemBody(props) {
   const [withdrawAmount, setWithdrawAmount] = useState(0);
 
   const depositHandler = async () => {
-    try {
-      handleDeposit(props.item.id, depositAmount);
-    } catch (err) {
-      console.log(err);
+    if (depositAmount > 0 && selector.user.isLoggedIn) {
+      console.log("withDraw Calling");
+      // try {
+      //   handleDeposit(props.item.id, depositAmount);
+      // } catch (err) {
+      //   console.log(err);
+      // }
     }
   };
 
   const withdrawHandler = () => {
-    try {
-      handleWithdraw(props.item.id, withdrawAmount);
-    } catch (err) {
-      console.log(err);
+    if (withdrawAmount > 0 && selector.user.isLoggedIn) {
+      console.log("withDraw Calling");
+      // try {
+      //   handleWithdraw(props.item.id, withdrawAmount);
+      // } catch (err) {
+      //   console.log(err);
+      // }
     }
   };
 
@@ -169,4 +172,6 @@ export default function AssetListItemBody(props) {
       )}
     </>
   );
-}
+};
+
+export default AssetListItemBody;

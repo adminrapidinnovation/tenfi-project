@@ -1,10 +1,12 @@
-/* =================================== USER ACTIONS ============================= */
+/* =================================== LOGIN-LOGOUT Action ============================= */
 
-export const AUTH_START = "AUTH_START";
-export const AUTH_SUCCESS = "AUTH_SUCCESS";
-export const AUTH_FAIL = "AUTH_FAIL";
-export const LOGOUT = "LOGOUT";
-export const IS_LOGGED_IN = "IS_LOGGED_IN";
+export const CONNECT_WALLET = "CONNECT_WALLET";
+export const DISCONNECT_WALLET = "DISCONNECT_WALLET";
+
+/* =================================== POOL DATA ============================= */
+
+export const POOL_DATA_LOADING = "POOL_DATA_LOADING";
+export const UPDATE_POOL_DATA = "UPDATE_POOL_DATA";
 
 //
 

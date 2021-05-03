@@ -1,48 +1,43 @@
 import {
-  AUTH_START,
-  AUTH_SUCCESS,
-  AUTH_FAIL,
-  LOGOUT,
-  IS_LOGGED_IN,
+  CONNECT_WALLET,
+  DISCONNECT_WALLET,
+  POOL_DATA_LOADING,
+  UPDATE_POOL_DATA,
 } from "../actions/action.config";
 
 const initialState = {
   isLoggedIn: false,
-  authLoading: false,
-  isLoaded: false,
-  userInfo: null,
+  address: null,
+  poolDataLoading: false,
+  poolData: [],
 };
 
 export const userReducer = (state = initialState, action) => {
-  const { type, data } = action;
+  const { type, payload } = action;
   switch (type) {
-    case AUTH_START:
+    case CONNECT_WALLET:
       return {
         ...state,
-        authLoading: true,
+        isLoggedIn: true,
+        address: payload,
       };
-
-    case AUTH_SUCCESS:
-      return {
-        ...state,
-        authLoading: false,
-        userInfo: data,
-      };
-
-    case IS_LOGGED_IN:
-      return {
-        ...state,
-        isLoggedIn: data.isLoggedIn,
-        userInfo: data.userInfo,
-      };
-    case AUTH_FAIL:
-    case LOGOUT:
+    case DISCONNECT_WALLET:
       return {
         ...state,
         isLoggedIn: false,
-        authLoading: false,
-        userInfo: null,
+        address: null,
       };
+    case POOL_DATA_LOADING:
+      return {
+        ...state,
+        poolDataLoading: payload,
+      };
+    case UPDATE_POOL_DATA:
+      return {
+        ...state,
+        poolData: payload,
+      };
+
     default:
       return state;
   }
