@@ -18,12 +18,10 @@ import {
 } from "./abi";
 let web3;
 let tokenList = {
-  0: { 0: "AQUA-BNB", 1: "AQUA" },
-  1: { 0: "AQUA", 1: "AQUA" },
-  2: { 0: "4BELT", 1: "4BELT" },
-  3: { 0: "BUSD-VAI", 1: "PCS" },
-  4: { 0: "BUSD-USDT", 1: "PCS" },
-  5: { 0: "BUSD-UST", 1: "PCS" },
+  0: { 0: "MINE-BNB", 1: "PCS" },
+  1: { 0: "AQUA-BNB", 1: "AQUA" },
+  2: { 0: "AQUA", 1: "AQUA" },
+  3: { 0: "BUSD-USDC", 1: "PCS" },
 };
 
 export const getAquaPrice = async () => {
