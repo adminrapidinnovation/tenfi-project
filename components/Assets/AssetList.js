@@ -99,7 +99,9 @@ function AssetList(props) {
                   {renderIcon(item.id, item.token)}
                   <td className={styles.colEmpty}>&nbsp;</td>
                   <td className={styles.colApi}>
-                    <span className={styles.badge}>APY {item.totalApy}</span>
+                    <span className={styles.badge}>
+                      APY {parseFloat(item.totalApy).toFixed(2)}
+                    </span>
                   </td>
                   <td className={styles.colText1}>
                     TVL {parseFloat(item.tokenTvl).toFixed(2)}
