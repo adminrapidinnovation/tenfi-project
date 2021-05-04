@@ -73,6 +73,55 @@ function AssetList(props) {
     setActiveIndex(index === activeIndex ? -1 : index);
   }
 
+  const renderRowItem = () => {
+    return poolData.map((item, index) => {
+      if (poolData[index] !== undefined) {
+        return (
+          <Fragment key={index}>
+            {console.log("item==>", item)}
+            <tr
+              className={`${styles.headrow} ${
+                index === activeIndex ? styles.active : ""
+              }`}
+            >
+              {renderIcon(item.id, item.token)}
+              <td className={styles.colEmpty}>&nbsp;</td>
+              <td className={styles.colApi}>
+                <span className={styles.badge}>
+                  APY {parseFloat(item.totalApy).toFixed(2)}
+                </span>
+              </td>
+              <td className={styles.colText1}>
+                TVL {parseFloat(item.tokenTvl).toFixed(2)}
+              </td>
+              <td className={styles.colText2}>TENFI Pending: {item.earned}</td>
+              <td className={styles.colBtn}>
+                <button
+                  className={`btn btn-icon btn-secondary ${
+                    index === activeIndex ? styles.btnActive : ""
+                  }`}
+                  type="button"
+                  onClick={() => {
+                    toggleActive(index);
+                  }}
+                >
+                  <ChevronDownIcon />
+                </button>
+              </td>
+            </tr>
+            {index === activeIndex && (
+              <tr>
+                <td colSpan="8" style={{ padding: "0" }}>
+                  {cloneElement(props.children, { item, index })}
+                </td>
+              </tr>
+            )}
+          </Fragment>
+        );
+      }
+    });
+  };
+
   return (
     <Fragment>
       <table className={styles.table}>
@@ -89,52 +138,7 @@ function AssetList(props) {
             </th>
           </tr>
         </thead>
-        <tbody>
-          {!poolDataLoading &&
-            poolData.map((item, index) => (
-              <Fragment key={index}>
-                <tr
-                  className={`${styles.headrow} ${
-                    index === activeIndex ? styles.active : ""
-                  }`}
-                >
-                  {/* {renderIcon(item.id, item.token)} */}
-                  <td className={styles.colEmpty}>&nbsp;</td>
-                  <td className={styles.colApi}>
-                    <span className={styles.badge}>
-                      APY {parseFloat(item.totalApy).toFixed(2)}
-                    </span>
-                  </td>
-                  <td className={styles.colText1}>
-                    TVL {parseFloat(item.tokenTvl).toFixed(2)}
-                  </td>
-                  <td className={styles.colText2}>
-                    TENFI Pending: {item.earned}
-                  </td>
-                  <td className={styles.colBtn}>
-                    <button
-                      className={`btn btn-icon btn-secondary ${
-                        index === activeIndex ? styles.btnActive : ""
-                      }`}
-                      type="button"
-                      onClick={() => {
-                        toggleActive(index);
-                      }}
-                    >
-                      <ChevronDownIcon />
-                    </button>
-                  </td>
-                </tr>
-                {index === activeIndex && (
-                  <tr>
-                    <td colSpan="8" style={{ padding: "0" }}>
-                      {cloneElement(props.children, { item, index })}
-                    </td>
-                  </tr>
-                )}
-              </Fragment>
-            ))}
-        </tbody>
+        <tbody>{!poolDataLoading && renderRowItem()}</tbody>
       </table>
       <div>
         {poolDataLoading && (

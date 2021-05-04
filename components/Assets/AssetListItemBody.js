@@ -48,23 +48,21 @@ const AssetListItemBody = (props) => {
 
   const depositHandler = async () => {
     if (depositAmount > 0 && selector.user.isLoggedIn) {
-      console.log("withDraw Calling");
-      // try {
-      //   handleDeposit(props.item.id, depositAmount);
-      // } catch (err) {
-      //   console.log(err);
-      // }
+      try {
+        handleDeposit(props.item.id, depositAmount);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   const withdrawHandler = () => {
     if (withdrawAmount > 0 && selector.user.isLoggedIn) {
-      console.log("withDraw Calling");
-      // try {
-      //   handleWithdraw(props.item.id, withdrawAmount);
-      // } catch (err) {
-      //   console.log(err);
-      // }
+      try {
+        handleWithdraw(props.item.id, withdrawAmount);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
