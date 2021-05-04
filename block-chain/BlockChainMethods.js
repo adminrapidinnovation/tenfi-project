@@ -1,34 +1,25 @@
 import axios from "axios";
 import Web3 from "web3";
 import {
-  aquaAbi,
-  aquaAddress,
-  aquaFarmAbi,
-  aquaFarmAddress,
-  aquaStrategyAquaAbi,
-  aquaStrategyBeltAbi,
-  aquaStrategyPcsAbi,
-  autofarmAbi,
-  autoFarmBeltStrat,
-  autoFarmPCSStrat,
-  beltLPAbi,
-  masterbeltAbi,
+  tenTokenAbi,
+  tenAddress,
+  tenFarmAbi,
+  tenFarmAddress,
+  tenStrategyTenAbi,
+  tenStrategyPcsAbi,
   masterchefAbi,
   pancakeLPabi,
 } from "./abi";
 let web3;
 let tokenList = {
-  0: { 0: "MINE-BNB", 1: "PCS" },
-  1: { 0: "AQUA-BNB", 1: "AQUA" },
-  2: { 0: "AQUA", 1: "AQUA" },
-  3: { 0: "BUSD-USDC", 1: "PCS" },
+  0: { 0: "TENFI", 1: "TENFI" },
+  1: { 0: "TENFI-BNB", 1: "TENFI" },
+  2: { 0: "BUSD-USDC", 1: "PCS" },
 };
 
-export const getAquaPrice = async () => {
-  const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
-  let poolDetails = await aquafarmInstance.methods.poolInfo("0").call();
-  // console.log("Below is the pool details");
-  // console.log( poolDetails);
+export const getTenPrice = async () => {
+  const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+  let poolDetails = await tenfarmInstance.methods.poolInfo("0").call();
   const lpAddress = poolDetails["want"];
   const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
   const bnbPrice = (
@@ -39,10 +30,9 @@ export const getAquaPrice = async () => {
   let getReserves = await pancakeLPinstance.methods.getReserves().call();
   let reserve0 = parseFloat(await getReserves["_reserve0"]);
   let reserve1 = parseFloat(await getReserves["_reserve1"]);
-  let bnbPerAQUA = reserve1 / reserve0;
-  const aquafinalPrice = bnbPerAQUA * bnbPrice;
-  // console.log(aquafinalPrice);
-  return aquafinalPrice;
+  let bnbPerTEN = reserve1 / reserve0;
+  const tenfinalPrice = bnbPerTEN * bnbPrice;
+  return tenfinalPrice;
 };
 
 export const getWeb3Val = async () => {
@@ -134,11 +124,11 @@ export const handleDeposit = async (poolId, amount, userAddress) => {
   if (userAddress) {
     try {
       const depositAmount = parseFloat(amount);
-      const aquafarmInstance = await selectInstance(
-        "AQUAFARM",
-        aquaFarmAddress
+      const tenfarmInstance = await selectInstance(
+        "TENFARM",
+        tenFarmAddress
       );
-      const poolDetails = await aquafarmInstance.methods
+      const poolDetails = await tenfarmInstance.methods
         .poolInfo(poolId)
         .call();
       const lpAddress = poolDetails["want"];
@@ -146,10 +136,10 @@ export const handleDeposit = async (poolId, amount, userAddress) => {
       let getAllowance = await getCurrentApproval(poolId, userAddress);
       if (depositAmount > getAllowance) {
         await pancakeLPinstance.methods
-          .approve(aquaFarmAddress, approvalAmount)
+          .approve(tenFarmAddress, approvalAmount)
           .send({ from: userAddress });
       }
-      await aquafarmInstance.methods
+      await tenfarmInstance.methods
         .deposit(poolId, convertToWei(depositAmount))
         .send({ from: userAddress });
     } catch (err) {
@@ -162,13 +152,13 @@ export const handleWithdraw = async (poolId, amount, userAddress) => {
   if (userAddress) {
     try {
       const withdrawAmount = parseFloat(amount);
-      const aquafarmInstance = await selectInstance(
-        "AQUAFARM",
-        aquaFarmAddress
+      const tenfarmInstance = await selectInstance(
+        "TENFARM",
+        tenFarmAddress
       );
       let getCurrentDeposit = await getCurrentLpDeposit(userAddress, poolId);
       if (withdrawAmount <= parseFloat(getCurrentDeposit))
-        await aquafarmInstance.methods
+        await tenfarmInstance.methods
           .withdraw(poolId, convertToWei(withdrawAmount))
           .send({ from: userAddress });
     } catch (err) {
@@ -186,8 +176,8 @@ const getFinalBalance = (val) => {
 const getLPbalance = async (currentUserAddress, poolId, typeOfPool) => {
   try {
     const userAddress = currentUserAddress;
-    const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
-    const poolDetails = await aquafarmInstance.methods.poolInfo(poolId).call();
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
     console.log(poolDetails);
     const lpAddress = poolDetails["want"];
     console.log(lpAddress);
@@ -201,15 +191,9 @@ const getLPbalance = async (currentUserAddress, poolId, typeOfPool) => {
       // console.log("This is the balance");
       // console.log(balanceVal);
       balance = convertToEther(balanceVal);
-    } else if (typeOfPool === "4BELT") {
-      const beltInstance = await selectInstance("BELTLP", lpAddress);
-      const balanceVal = await beltInstance.methods
-        .balanceOf(userAddress)
-        .call();
-      balance = convertToEther(balanceVal);
-    } else if (typeOfPool === "AQUA") {
-      const aquaInstance = await selectInstance("AQUATOKEN", lpAddress);
-      const balanceVal = await aquaInstance.methods
+    }else if (typeOfPool === "TEN") {
+      const tenTokenInstance = await selectInstance("TENTOKEN", lpAddress);
+      const balanceVal = await tenTokenInstance.methods
         .balanceOf(userAddress)
         .call();
       balance = convertToEther(balanceVal);
@@ -224,8 +208,8 @@ const getLPbalance = async (currentUserAddress, poolId, typeOfPool) => {
 const getCurrentLpDeposit = async (currentUserAddress, poolId) => {
   try {
     const userAddress = currentUserAddress;
-    const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
-    let currentLPdeposit = await aquafarmInstance.methods
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    let currentLPdeposit = await tenfarmInstance.methods
       .userInfo(poolId, userAddress)
       .call();
     const currentLPdeposits = convertToEther(currentLPdeposit["shares"]);
@@ -236,31 +220,31 @@ const getCurrentLpDeposit = async (currentUserAddress, poolId) => {
   }
 };
 
-const getCurrentBalance = async (aquaPoolId, userAddress, typeOfAquaPool) => {
+const getCurrentBalance = async (tenPoolId, userAddress, typeOfTenPool) => {
   let result = 0;
-  const aquaFarm = await selectInstance("AQUAFARM", aquaFarmAddress);
-  const aquaVaultAddress = (await aquaFarm.methods.poolInfo(aquaPoolId).call())[
+  const tenFarm = await selectInstance("TENFARM", tenFarmAddress);
+  const tenVaultAddress = (await tenFarm.methods.poolInfo(tenPoolId).call())[
     "strat"
   ];
-  const aquaStrategyPoolContract = await selectInstance(
-    typeOfAquaPool,
-    aquaVaultAddress
+  const tenStrategyPoolContract = await selectInstance(
+    typeOfTenPool,
+    tenVaultAddress
   );
-  const aquaVaultId = await aquaStrategyPoolContract.methods.pid().call();
+  const tenVaultId = await tenStrategyPoolContract.methods.pid().call();
 
-  const aquaVaultFarmContractAddress = await aquaStrategyPoolContract.methods
+  const tenVaultFarmContractAddress = await tenStrategyPoolContract.methods
     .farmContractAddress()
     .call();
   const autofarmInstance = await selectInstance(
     "AUTOFARM",
-    aquaVaultFarmContractAddress
+    tenVaultFarmContractAddress
   );
   const poolDetailsOfAutoFarm = await autofarmInstance.methods
-    .poolInfo(aquaVaultId)
+    .poolInfo(tenVaultId)
     .call();
   const stratAddressOfAutoFarmPool = poolDetailsOfAutoFarm["strat"];
 
-  if (typeOfAquaPool === "PCS") {
+  if (typeOfTenPool === "PCS") {
     const autoStrategyPoolContract = await selectInstance(
       "AUTOPCS",
       stratAddressOfAutoFarmPool
@@ -284,62 +268,22 @@ const getCurrentBalance = async (aquaPoolId, userAddress, typeOfAquaPool) => {
       .call();
     shareTotalAuto = parseFloat(shareTotalAuto);
 
-    let aquashare_in_auto = await autofarmInstance.methods
-      .userInfo(aquaVaultId, aquaVaultAddress)
+    let tenshare_in_auto = await autofarmInstance.methods
+      .userInfo(tenVaultId, tenVaultAddress)
       .call();
-    let share = aquashare_in_auto["shares"];
+    let share = tenshare_in_auto["shares"];
     share = parseFloat(share);
 
-    const aquaShare = share / shareTotalAuto;
-    result += aquaShare * auto_s_pcsDeposit;
-    const userShare = await aquaFarm.methods
-      .userInfo(aquaPoolId, userAddress)
+    const tenShare = share / shareTotalAuto;
+    result += tenShare * auto_s_pcsDeposit;
+    const userShare = await tenFarm.methods
+      .userInfo(tenPoolId, userAddress)
       .call();
     const userShares = parseFloat(userShare["shares"]);
-    const shareTotalAqua = await aquaStrategyPoolContract.methods
+    const shareTotalTen = await tenStrategyPoolContract.methods
       .sharesTotal()
       .call();
-    const newuserShares = userShares / shareTotalAqua;
-    result *= newuserShares;
-    result = result / Math.pow(10, 18);
-    return result;
-  } else if (typeOfAquaPool === "4BELT") {
-    const autoStrategyPoolContract = await selectInstance(
-      "AUTO4BELT",
-      stratAddressOfAutoFarmPool
-    );
-    const autoVaultId = await autoStrategyPoolContract.methods.pid().call();
-
-    const masterBelt = await autoStrategyPoolContract.methods
-      .farmContractAddress()
-      .call();
-    const masterBeltInstance = await selectInstance("MASTERBELT", masterBelt);
-    const masterBeltUserInfo = await masterBeltInstance.methods
-      .userInfo(autoVaultId, stratAddressOfAutoFarmPool)
-      .call();
-
-    let auto_s_4beltDeposit = masterBeltUserInfo["shares"];
-    let shareTotalAuto = await autoStrategyPoolContract.methods
-      .sharesTotal()
-      .call();
-    shareTotalAuto = parseFloat(shareTotalAuto);
-
-    let aquashare_in_auto = await autofarmInstance.methods
-      .userInfo(aquaVaultId, aquaVaultAddress)
-      .call();
-    let share = aquashare_in_auto["shares"];
-    share = parseFloat(share);
-
-    const aquaShare = share / shareTotalAuto;
-    result += aquaShare * auto_s_4beltDeposit;
-    let userShare = await aquaFarm.methods
-      .userInfo(aquaPoolId, userAddress)
-      .call();
-    const userShares = parseFloat(userShare["shares"]);
-    const shareTotalAqua = await aquaStrategyPoolContract.methods
-      .sharesTotal()
-      .call();
-    const newuserShares = userShares / shareTotalAqua;
+    const newuserShares = userShares / shareTotalTen;
     result *= newuserShares;
     result = result / Math.pow(10, 18);
     return result;
@@ -353,12 +297,12 @@ const getUserLpStatus = async (userAddress, poolId) => {
     ).data;
     let pools = autoAPiData["pools"];
 
-    const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
-    let poolDetails = await aquafarmInstance.methods.poolInfo(poolId).call();
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    let poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
     let strategyInstance;
     let tvl = 0;
     let poolAllocPoint;
-    let aquaPerBlock;
+    let tenPerBlock;
     let tokenYield;
     let tokenYieldPerDay;
     let tokenType;
@@ -387,7 +331,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       let reserve1tokenPrice = parseFloat(token.data[token1Address].price);
       tokenType = "LP";
       tokenTypeBoolean = true;
-      farmName = "AUTO";
+      farmName = "PCS";
       strategyInstance = await selectInstance("PCS", poolDetails["strat"]);
       let autoPoolId = await strategyInstance.methods.pid().call();
       autoFarmApy = pools[autoPoolId]["APY_total"];
@@ -397,25 +341,25 @@ const getUserLpStatus = async (userAddress, poolId) => {
         (reserve0 * reserve0tokenPrice + reserve1 * reserve1tokenPrice) /
         totalLpSupply;
       tvl = convertToEther(tvl) * assetPrice;
-      aquaPerBlock = await aquafarmInstance.methods.AQUAPerBlock().call();
-      aquaPerBlock = convertToEther(aquaPerBlock);
+      tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
+      tenPerBlock = convertToEther(tenPerBlock);
       poolAllocPoint = poolDetails["allocPoint"];
-      let totalAllocPoint = await aquafarmInstance.methods
+      let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
       tokenYield =
         tvl > 0
-          ? ((aquaPerBlock *
+          ? ((tenPerBlock *
               28800 *
               (poolAllocPoint / totalAllocPoint) *
-              (await getAquaPrice())) /
+              (await getTenPrice())) /
               tvl) *
             365 *
             100
-          : aquaPerBlock *
+          : tenPerBlock *
             28800 *
             (poolAllocPoint / totalAllocPoint) *
-            (await getAquaPrice()) *
+            (await getTenPrice()) *
             365 *
             100;
       tokenYieldPerDay = tokenYield / 365;
@@ -423,70 +367,26 @@ const getUserLpStatus = async (userAddress, poolId) => {
         currentBalance = await getCurrentBalance(poolId, userAddress, "PCS");
         LPbalance = await getLPbalance(userAddress, poolId, "PCS");
       }
-    } else if (tokenList[poolId][1] === "4BELT") {
-      const lpAddress = poolDetails["want"];
-      pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
-      tokenType = "BLP";
-      farmName = "AUTO";
-      tokenTypeBoolean = true;
-      getLpTokenLink = "https://belt.fi/";
-      strategyInstance = await selectInstance("4BELT", poolDetails["strat"]);
-      let autoPoolId = await strategyInstance.methods.pid().call();
-      autoFarmApy = pools[autoPoolId]["APY_total"];
-      tvl = await strategyInstance.methods.wantLockedTotal().call();
-      const token = (
-        await axios.get("https://api.pancakeswap.info/api/v2/tokens")
-      ).data;
-      assetPrice = parseFloat(
-        token.data["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"].price
-      );
-      tvl = convertToEther(tvl) * assetPrice;
-      aquaPerBlock = await aquafarmInstance.methods.AQUAPerBlock().call();
-      aquaPerBlock = convertToEther(aquaPerBlock);
-      poolAllocPoint = poolDetails["allocPoint"];
-      let totalAllocPoint = await aquafarmInstance.methods
-        .totalAllocPoint()
-        .call();
-      tokenYield =
-        tvl > 0
-          ? ((aquaPerBlock *
-              28800 *
-              (poolAllocPoint / totalAllocPoint) *
-              (await getAquaPrice())) /
-              tvl) *
-            365 *
-            100
-          : aquaPerBlock *
-            28800 *
-            (poolAllocPoint / totalAllocPoint) *
-            (await getAquaPrice()) *
-            365 *
-            100;
-      tokenYieldPerDay = tokenYield / 365;
-      if (userAddress) {
-        currentBalance = await getCurrentBalance(poolId, userAddress, "4BELT");
-        LPbalance = await getLPbalance(userAddress, poolId, "4BELT");
-      }
-    } else if (
-      tokenList[poolId][1] === "AQUA" &&
-      tokenList[poolId][0] === "AQUA-BNB"
+    }  else if (
+      tokenList[poolId][1] === "TENFI" &&
+      tokenList[poolId][0] === "TENFI-BNB"
     ) {
       const lpAddress = poolDetails["want"];
       pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
       tokenType = "LP";
-      farmName = "AQUA";
-      getLpTokenLink = `https://exchange.pancakeswap.finance/#/add/BNB/${aquaAddress}`;
-      strategyInstance = await selectInstance("AQUA", poolDetails["strat"]);
+      farmName = "TEN";
+      getLpTokenLink = `https://exchange.pancakeswap.finance/#/add/BNB/${tenAddress}`;
+      strategyInstance = await selectInstance("TEN", poolDetails["strat"]);
       tvl = await strategyInstance.methods.wantLockedTotal().call();
-      aquaPerBlock = await aquafarmInstance.methods.AQUAPerBlock().call();
-      aquaPerBlock = convertToEther(aquaPerBlock);
+      tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
+      tenPerBlock = convertToEther(tenPerBlock);
       poolAllocPoint = poolDetails["allocPoint"];
 
       let getReserves = await pancakeLPinstance.methods.getReserves().call();
       let reserve0 = parseFloat(await getReserves["_reserve0"]);
       let reserve1 = parseFloat(await getReserves["_reserve1"]);
       let totalLpSupply = await pancakeLPinstance.methods.totalSupply().call();
-      const token0price = await getAquaPrice();
+      const token0price = await getTenPrice();
       const token1price = (
         await axios.get(
           "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
@@ -496,22 +396,22 @@ const getUserLpStatus = async (userAddress, poolId) => {
         (reserve0 * token0price + reserve1 * token1price) / totalLpSupply;
       tokenTypeBoolean = true;
       tvl = convertToEther(tvl) * assetPrice;
-      let totalAllocPoint = await aquafarmInstance.methods
+      let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
       tokenYield =
         tvl > 0
-          ? ((aquaPerBlock *
+          ? ((tenPerBlock *
               28800 *
               (poolAllocPoint / totalAllocPoint) *
-              (await getAquaPrice())) /
+              (await getTenPrice())) /
               tvl) *
             365 *
             100
-          : aquaPerBlock *
+          : tenPerBlock *
             28800 *
             (poolAllocPoint / totalAllocPoint) *
-            (await getAquaPrice()) *
+            (await getTenPrice()) *
             365 *
             100;
       tokenYieldPerDay = tokenYield / 365;
@@ -520,51 +420,51 @@ const getUserLpStatus = async (userAddress, poolId) => {
         LPbalance = await getLPbalance(userAddress, poolId, "PCS");
       }
     } else if (
-      tokenList[poolId][1] === "AQUA" &&
-      tokenList[poolId][0] === "AQUA"
+      tokenList[poolId][1] === "TENFI" &&
+      tokenList[poolId][0] === "TENFI"
     ) {
       const lpAddress = poolDetails["want"];
       pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
       tokenType = "";
-      farmName = "AQUA";
+      farmName = "TEN";
       getLpTokenLink = null;
-      strategyInstance = await selectInstance("AQUA", poolDetails["strat"]);
+      strategyInstance = await selectInstance("TEN", poolDetails["strat"]);
       tvl = await strategyInstance.methods.wantLockedTotal().call();
-      aquaPerBlock = await aquafarmInstance.methods.AQUAPerBlock().call();
-      assetPrice = await getAquaPrice();
+      tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
+      assetPrice = await getTenPrice();
       tokenTypeBoolean = false;
       tvl = convertToEther(tvl) * assetPrice;
-      aquaPerBlock = convertToEther(aquaPerBlock);
+      tenPerBlock = convertToEther(tenPerBlock);
       poolAllocPoint = poolDetails["allocPoint"];
-      let totalAllocPoint = await aquafarmInstance.methods
+      let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
       tokenYield =
         tvl > 0
-          ? ((aquaPerBlock *
+          ? ((tenPerBlock *
               28800 *
               (poolAllocPoint / totalAllocPoint) *
-              (await getAquaPrice())) /
+              (await getTenPrice())) /
               tvl) *
             365 *
             100
-          : aquaPerBlock *
+          : tenPerBlock *
             28800 *
             (poolAllocPoint / totalAllocPoint) *
-            (await getAquaPrice()) *
+            (await getTenPrice()) *
             365 *
             100;
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
-        LPbalance = await getLPbalance(userAddress, poolId, "AQUA");
+        LPbalance = await getLPbalance(userAddress, poolId, "TEN");
       }
     }
     if (userAddress != null) {
       obj["id"] = poolId;
       obj["liquidBalance"] = LPbalance;
       obj["currentLpDeposit"] = await getCurrentLpDeposit(userAddress, poolId);
-      obj["pendingAquaEarnings"] = await getPendingAquaClaim(
+      obj["pendingTENEarnings"] = await getPendingTENClaim(
         userAddress,
         poolId
       );
@@ -575,32 +475,32 @@ const getUserLpStatus = async (userAddress, poolId) => {
       obj["totalEarned"] =
         `${parseFloat(currentBalance).toFixed(2)}` + tokenType;
       obj["currentBalance"] = parseFloat(currentBalance) * assetPrice;
-      obj["rewardToken"] = await getPendingAquaClaim(userAddress, poolId);
-      obj["reward"] = obj["rewardToken"] * (await getAquaPrice());
+      obj["rewardToken"] = await getPendingTENClaim(userAddress, poolId);
+      obj["reward"] = obj["rewardToken"] * (await getTenPrice());
       obj["assetTokenPrice"] = assetPrice;
       obj["farmName"] = farmName;
       obj[
         "farmContract"
-      ] = `https://bscscan.com/address/${aquaFarmAddress}#code`;
+      ] = `https://bscscan.com/address/${tenFarmAddress}#code`;
       obj[
         "vaultContractt"
       ] = `https://bscscan.com/address/${poolDetails["strat"]}#code`;
       obj["farmApy"] = autoFarmApy * 100;
       obj["optimalCompoundsPerYear"] = "0";
-      obj["aquaApr"] = tokenYield;
+      obj["tenApr"] = tokenYield;
       obj["totalApy"] = tokenYield + autoFarmApy * 100;
       obj["getLpToken"] = getLpTokenLink;
       obj["tokenType"] = tokenTypeBoolean;
       obj[
         "currentPoolTokenApproval"
       ] = await pancakeLPinstance.methods
-        .allowance(userAddress, aquaFarmAddress)
+        .allowance(userAddress, tenFarmAddress)
         .call();
     } else {
       obj["id"] = poolId;
       obj["liquidBalance"] = "0.0000";
       obj["currentLpDeposit"] = "0.0000";
-      obj["pendingAquaEarnings"] = "0.0000";
+      obj["pendingTenEarnings"] = "0.0000";
       obj["token"] = tokenList[poolId][0];
       obj["tokenTvl"] = tvl;
       obj["tokenYield"] = tokenYield;
@@ -613,13 +513,13 @@ const getUserLpStatus = async (userAddress, poolId) => {
       obj["farmName"] = farmName;
       obj[
         "farmContract"
-      ] = `https://bscscan.com/address/${aquaFarmAddress}#code`;
+      ] = `https://bscscan.com/address/${tenFarmAddress}#code`;
       obj[
         "vaultContractt"
       ] = `https://bscscan.com/address/${poolDetails["strat"]}#code`;
       obj["farmApy"] = autoFarmApy * 100;
       obj["optimalCompoundsPerYear"] = "0";
-      obj["aquaApr"] = tokenYield;
+      obj["tenApr"] = tokenYield;
       obj["totalApy"] = tokenYield + autoFarmApy * 100;
       obj["getLpToken"] = getLpTokenLink;
       obj["tokenType"] = tokenTypeBoolean;
@@ -631,15 +531,15 @@ const getUserLpStatus = async (userAddress, poolId) => {
   }
 };
 
-export const getPendingAquaClaim = async (currentUserAddress, poolId) => {
+export const getPendingTenClaim = async (currentUserAddress, poolId) => {
   try {
-    const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
     const userAddress = currentUserAddress;
-    var currentPendingAqua = await aquafarmInstance.methods
-      .pendingAQUA(poolId, userAddress)
+    var currentPendingTen = await tenfarmInstance.methods
+      .pendingTEN(poolId, userAddress)
       .call();
-    currentPendingAqua = convertToEther(currentPendingAqua);
-    return currentPendingAqua;
+    currentPendingTen = convertToEther(currentPendingTen);
+    return currentPendingTen;
   } catch (err) {
     console.log(err);
   }
@@ -666,8 +566,8 @@ export const harvestAllLpTokens = async (userAddress) => {
 
 const getPoolLength = async () => {
   try {
-    const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
-    const poolLength = await aquafarmInstance.methods.poolLength().call();
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    const poolLength = await tenfarmInstance.methods.poolLength().call();
     console.log(poolLength);
     return poolLength;
   } catch (err) {
@@ -701,32 +601,32 @@ export const returnPlatformData = async (userAddress) => {
     let totalBalance = 0;
     poolDetails.forEach((element) => {
       totalTvl += element["tokenTvl"];
-      myPortfolioCurrentApy += element["aquaApr"];
+      myPortfolioCurrentApy += element["tenApr"];
       myPortfolioRewards += element["reward"];
       totalBalance += element["currentBalance"];
     });
 
-    const aquaInstance = await selectInstance("AQUATOKEN", aquaAddress);
-    const aquaFarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
-    let aquaTotalSupply = parseFloat(
-      await aquaInstance.methods.totalSupply().call()
+    const tenTokenInstance = await selectInstance("TENTOKEN", tenAddress);
+    const tenFarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    let tenTotalSupply = parseFloat(
+      await tenTokenInstance.methods.totalSupply().call()
     );
     maxSupply = convertToEther(
-      await aquaFarmInstance.methods.AQUAMaxSupply().call()
+      await tenFarmInstance.methods.TENMaxSupply().call()
     );
     let obj = {
-      circulatingSupply: convertToEther(aquaTotalSupply),
+      circulatingSupply: convertToEther(tenTotalSupply),
       maxSupply: maxSupply,
       totalTvl: totalTvl,
       myPortfolioCurrentApy: myPortfolioCurrentApy / poolLength,
       myPortfolioRewards: myPortfolioRewards,
       totalBalance: totalBalance,
-      marketCap: convertToEther(aquaTotalSupply) * (await getAquaPrice()),
+      marketCap: convertToEther(tenTotalSupply) * (await getTenPrice()),
       totalProfitGenerated:
-        convertToEther(aquaTotalSupply) * (await getAquaPrice()),
+        convertToEther(tenTotalSupply) * (await getTenPrice()),
       perDayProfitGenerated:
-        convertToEther(await aquaFarmInstance.methods.AQUAPerBlock().call()) *
-        (await getAquaPrice()),
+        convertToEther(await tenFarmInstance.methods.TENPerBlock().call()) *
+        (await getTenPrice()),
     };
     return obj;
   } catch (err) {
@@ -736,12 +636,12 @@ export const returnPlatformData = async (userAddress) => {
 
 export const getCurrentApproval = async (poolId, userAddress) => {
   try {
-    const aquafarmInstance = await selectInstance("AQUAFARM", aquaFarmAddress);
-    const poolDetails = await aquafarmInstance.methods.poolInfo(poolId).call();
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
     const lpAddress = poolDetails["want"];
     const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
     var getAllowance = await pancakeLPinstance.methods
-      .allowance(userAddress, aquaFarmAddress)
+      .allowance(userAddress, tenFarmAddress)
       .call();
     getAllowance = convertToEther(getAllowance);
     return getAllowance;
@@ -753,30 +653,18 @@ export const getCurrentApproval = async (poolId, userAddress) => {
 export const selectInstance = async (type, contractAddress) => {
   const web3 = new Web3(window.ethereum);
   switch (type) {
-    case "AQUAFARM":
-      return new web3.eth.Contract(aquaFarmAbi, contractAddress);
-    case "AQUATOKEN":
-      return new web3.eth.Contract(aquaAbi, contractAddress);
+    case "TENFARM":
+      return new web3.eth.Contract(tenFarmAbi, contractAddress);
+    case "TENTOKEN":
+      return new web3.eth.Contract(tenTokenAbi, contractAddress);
     case "PCS":
-      return new web3.eth.Contract(aquaStrategyPcsAbi, contractAddress);
-    case "4BELT":
-      return new web3.eth.Contract(aquaStrategyBeltAbi, contractAddress);
-    case "AQUA":
-      return new web3.eth.Contract(aquaStrategyAquaAbi, contractAddress);
+      return new web3.eth.Contract(tenStrategyPcsAbi, contractAddress);
+    case "TEN":
+      return new web3.eth.Contract(tenStrategyTenAbi, contractAddress);
     case "PANCAKELP":
       return new web3.eth.Contract(pancakeLPabi, contractAddress);
-    case "BELTLP":
-      return new web3.eth.Contract(beltLPAbi, contractAddress);
     case "MASTERCHEF":
       return new web3.eth.Contract(masterchefAbi, contractAddress);
-    case "MASTERBELT":
-      return new web3.eth.Contract(masterbeltAbi, contractAddress);
-    case "AUTOFARM":
-      return new web3.eth.Contract(autofarmAbi, contractAddress);
-    case "AUTOPCS":
-      return new web3.eth.Contract(autoFarmPCSStrat, contractAddress);
-    case "AUTO4BELT":
-      return new web3.eth.Contract(autoFarmBeltStrat, contractAddress);
     default:
       return null;
   }
