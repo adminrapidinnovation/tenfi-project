@@ -67,6 +67,8 @@ function AssetList(props) {
   const { poolData, poolDataLoading } = selector.user;
   const [activeIndex, setActiveIndex] = useState(-1);
 
+  console.log("selector-->", selector);
+
   function toggleActive(index) {
     setActiveIndex(index === activeIndex ? -1 : index);
   }
@@ -96,7 +98,7 @@ function AssetList(props) {
                     index === activeIndex ? styles.active : ""
                   }`}
                 >
-                  {renderIcon(item.id, item.token)}
+                  {/* {renderIcon(item.id, item.token)} */}
                   <td className={styles.colEmpty}>&nbsp;</td>
                   <td className={styles.colApi}>
                     <span className={styles.badge}>
