@@ -124,13 +124,8 @@ export const handleDeposit = async (poolId, amount, userAddress) => {
   if (userAddress) {
     try {
       const depositAmount = parseFloat(amount);
-      const tenfarmInstance = await selectInstance(
-        "TENFARM",
-        tenFarmAddress
-      );
-      const poolDetails = await tenfarmInstance.methods
-        .poolInfo(poolId)
-        .call();
+      const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+      const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
       const lpAddress = poolDetails["want"];
       const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
       let getAllowance = await getCurrentApproval(poolId, userAddress);
@@ -152,10 +147,7 @@ export const handleWithdraw = async (poolId, amount, userAddress) => {
   if (userAddress) {
     try {
       const withdrawAmount = parseFloat(amount);
-      const tenfarmInstance = await selectInstance(
-        "TENFARM",
-        tenFarmAddress
-      );
+      const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
       let getCurrentDeposit = await getCurrentLpDeposit(userAddress, poolId);
       if (withdrawAmount <= parseFloat(getCurrentDeposit))
         await tenfarmInstance.methods
@@ -191,7 +183,7 @@ const getLPbalance = async (currentUserAddress, poolId, typeOfPool) => {
       // console.log("This is the balance");
       // console.log(balanceVal);
       balance = convertToEther(balanceVal);
-    }else if (typeOfPool === "TEN") {
+    } else if (typeOfPool === "TEN") {
       const tenTokenInstance = await selectInstance("TENTOKEN", lpAddress);
       const balanceVal = await tenTokenInstance.methods
         .balanceOf(userAddress)
@@ -367,7 +359,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
         currentBalance = 0;
         LPbalance = await getLPbalance(userAddress, poolId, "PCS");
       }
-    }  else if (
+    } else if (
       tokenList[poolId][1] === "TENFI" &&
       tokenList[poolId][0] === "TENFI-BNB"
     ) {
@@ -464,10 +456,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       obj["id"] = poolId;
       obj["liquidBalance"] = LPbalance;
       obj["currentLpDeposit"] = await getCurrentLpDeposit(userAddress, poolId);
-      obj["pendingTENEarnings"] = await getPendingTENClaim(
-        userAddress,
-        poolId
-      );
+      obj["pendingTENEarnings"] = await getPendingTENClaim(userAddress, poolId);
       obj["token"] = tokenList[poolId][0];
       obj["tokenTvl"] = tvl;
       obj["tokenYield"] = tokenYield;
