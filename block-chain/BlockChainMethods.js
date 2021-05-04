@@ -557,7 +557,6 @@ const getPoolLength = async () => {
   try {
     const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
     const poolLength = await tenfarmInstance.methods.poolLength().call();
-    console.log(poolLength);
     return poolLength;
   } catch (err) {
     console.log(err);
@@ -566,7 +565,6 @@ const getPoolLength = async () => {
 
 export const returnPoolData = async (userAddress) => {
   try {
-    console.log(userAddress);
     const poolLength = await getPoolLength();
     let result = [];
     for (let i = 0; i < poolLength; i++) {

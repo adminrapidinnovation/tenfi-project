@@ -1,6 +1,8 @@
 import styles from "../styles/modules/Numberfield.module.scss";
 
 export default function NumberField(props) {
+  const { color, onChange, setMax, value } = props;
+
   return (
     <div className="form-group">
       <label>
@@ -11,15 +13,15 @@ export default function NumberField(props) {
         <div className="input-group">
           <input
             type="number"
-            onChange={props.onChange}
+            onChange={onChange}
             className="form-control"
+            value={value}
           />
           <div className="input-group-text" type="button">
             <button
-              className={`${styles.btn} ${
-                props.color ? `text-${props.color}` : ""
-              }`}
+              className={`${styles.btn} ${color ? `text-${color}` : ""}`}
               type="button"
+              onClick={() => setMax()}
             >
               Max
             </button>
