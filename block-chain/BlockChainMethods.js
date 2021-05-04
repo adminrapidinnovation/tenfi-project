@@ -220,75 +220,75 @@ const getCurrentLpDeposit = async (currentUserAddress, poolId) => {
   }
 };
 
-const getCurrentBalance = async (tenPoolId, userAddress, typeOfTenPool) => {
-  let result = 0;
-  const tenFarm = await selectInstance("TENFARM", tenFarmAddress);
-  const tenVaultAddress = (await tenFarm.methods.poolInfo(tenPoolId).call())[
-    "strat"
-  ];
-  const tenStrategyPoolContract = await selectInstance(
-    typeOfTenPool,
-    tenVaultAddress
-  );
-  const tenVaultId = await tenStrategyPoolContract.methods.pid().call();
+// const getCurrentBalance = async (tenPoolId, userAddress, typeOfTenPool) => {
+//   let result = 0;
+//   const tenFarm = await selectInstance("TENFARM", tenFarmAddress);
+//   const tenVaultAddress = (await tenFarm.methods.poolInfo(tenPoolId).call())[
+//     "strat"
+//   ];
+//   const tenStrategyPoolContract = await selectInstance(
+//     typeOfTenPool,
+//     tenVaultAddress
+//   );
+//   const tenVaultId = await tenStrategyPoolContract.methods.pid().call();
 
-  const tenVaultFarmContractAddress = await tenStrategyPoolContract.methods
-    .farmContractAddress()
-    .call();
-  const autofarmInstance = await selectInstance(
-    "AUTOFARM",
-    tenVaultFarmContractAddress
-  );
-  const poolDetailsOfAutoFarm = await autofarmInstance.methods
-    .poolInfo(tenVaultId)
-    .call();
-  const stratAddressOfAutoFarmPool = poolDetailsOfAutoFarm["strat"];
+//   const tenVaultFarmContractAddress = await tenStrategyPoolContract.methods
+//     .farmContractAddress()
+//     .call();
+//   const autofarmInstance = await selectInstance(
+//     "AUTOFARM",
+//     tenVaultFarmContractAddress
+//   );
+//   const poolDetailsOfAutoFarm = await autofarmInstance.methods
+//     .poolInfo(tenVaultId)
+//     .call();
+//   const stratAddressOfAutoFarmPool = poolDetailsOfAutoFarm["strat"];
 
-  if (typeOfTenPool === "PCS") {
-    const autoStrategyPoolContract = await selectInstance(
-      "AUTOPCS",
-      stratAddressOfAutoFarmPool
-    );
-    const autoVaultId = await autoStrategyPoolContract.methods.pid().call();
+//   if (typeOfTenPool === "PCS") {
+//     const autoStrategyPoolContract = await selectInstance(
+//       "AUTOPCS",
+//       stratAddressOfAutoFarmPool
+//     );
+//     const autoVaultId = await autoStrategyPoolContract.methods.pid().call();
 
-    let masterchefAddress = await autoStrategyPoolContract.methods
-      .farmContractAddress()
-      .call();
-    const masterChefInstance = await selectInstance(
-      "MASTERCHEF",
-      masterchefAddress
-    );
-    const masterchefUserInfo = await masterChefInstance.methods
-      .userInfo(autoVaultId, stratAddressOfAutoFarmPool)
-      .call();
+//     let masterchefAddress = await autoStrategyPoolContract.methods
+//       .farmContractAddress()
+//       .call();
+//     const masterChefInstance = await selectInstance(
+//       "MASTERCHEF",
+//       masterchefAddress
+//     );
+//     const masterchefUserInfo = await masterChefInstance.methods
+//       .userInfo(autoVaultId, stratAddressOfAutoFarmPool)
+//       .call();
 
-    const auto_s_pcsDeposit = masterchefUserInfo["amount"];
-    let shareTotalAuto = await autoStrategyPoolContract.methods
-      .sharesTotal()
-      .call();
-    shareTotalAuto = parseFloat(shareTotalAuto);
+//     const auto_s_pcsDeposit = masterchefUserInfo["amount"];
+//     let shareTotalAuto = await autoStrategyPoolContract.methods
+//       .sharesTotal()
+//       .call();
+//     shareTotalAuto = parseFloat(shareTotalAuto);
 
-    let tenshare_in_auto = await autofarmInstance.methods
-      .userInfo(tenVaultId, tenVaultAddress)
-      .call();
-    let share = tenshare_in_auto["shares"];
-    share = parseFloat(share);
+//     let tenshare_in_auto = await autofarmInstance.methods
+//       .userInfo(tenVaultId, tenVaultAddress)
+//       .call();
+//     let share = tenshare_in_auto["shares"];
+//     share = parseFloat(share);
 
-    const tenShare = share / shareTotalAuto;
-    result += tenShare * auto_s_pcsDeposit;
-    const userShare = await tenFarm.methods
-      .userInfo(tenPoolId, userAddress)
-      .call();
-    const userShares = parseFloat(userShare["shares"]);
-    const shareTotalTen = await tenStrategyPoolContract.methods
-      .sharesTotal()
-      .call();
-    const newuserShares = userShares / shareTotalTen;
-    result *= newuserShares;
-    result = result / Math.pow(10, 18);
-    return result;
-  }
-};
+//     const tenShare = share / shareTotalAuto;
+//     result += tenShare * auto_s_pcsDeposit;
+//     const userShare = await tenFarm.methods
+//       .userInfo(tenPoolId, userAddress)
+//       .call();
+//     const userShares = parseFloat(userShare["shares"]);
+//     const shareTotalTen = await tenStrategyPoolContract.methods
+//       .sharesTotal()
+//       .call();
+//     const newuserShares = userShares / shareTotalTen;
+//     result *= newuserShares;
+//     result = result / Math.pow(10, 18);
+//     return result;
+//   }
+// };
 const getUserLpStatus = async (userAddress, poolId) => {
   try {
     var obj = {};
@@ -364,7 +364,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
             100;
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
-        currentBalance = await getCurrentBalance(poolId, userAddress, "PCS");
+        currentBalance = 0;
         LPbalance = await getLPbalance(userAddress, poolId, "PCS");
       }
     }  else if (
