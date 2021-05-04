@@ -49,7 +49,7 @@ const AssetListItemBody = (props) => {
   const depositHandler = async () => {
     if (depositAmount > 0 && selector.user.isLoggedIn) {
       try {
-        handleDeposit(props.item.id, depositAmount);
+        handleDeposit(props.item.id, depositAmount, selector.user.address);
       } catch (err) {
         console.log(err);
       }
@@ -59,7 +59,7 @@ const AssetListItemBody = (props) => {
   const withdrawHandler = () => {
     if (withdrawAmount > 0 && selector.user.isLoggedIn) {
       try {
-        handleWithdraw(props.item.id, withdrawAmount);
+        handleWithdraw(props.item.id, withdrawAmount, selector.user.address);
       } catch (err) {
         console.log(err);
       }
