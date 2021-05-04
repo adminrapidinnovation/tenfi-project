@@ -531,7 +531,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
   }
 };
 
-export const getPendingTenClaim = async (currentUserAddress, poolId) => {
+export const getPendingTENClaim = async (currentUserAddress, poolId) => {
   try {
     const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
     const userAddress = currentUserAddress;
