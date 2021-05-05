@@ -29,7 +29,7 @@ const AssetListItemDetails = (props) => {
   };
 
   const getClaimDollarValue = () => {
-    const val = parseFloat(tenPrice) * parseFloat(item.pendingTenEarnings);
+    const val = parseFloat(tenPrice) * parseFloat(item.pendingTENEarnings);
     return parseFloat(val).toFixed(2);
   };
   return (
@@ -48,7 +48,7 @@ const AssetListItemDetails = (props) => {
         TENFI Pending:
         <span className={styles.value}>
           <span className="text-danger">
-            {parseFloat(item.pendingTenEarnings).toFixed(2)}
+            {parseFloat(item.pendingTENEarnings).toFixed(2)}
           </span>{" "}
           (${getClaimDollarValue()})
         </span>

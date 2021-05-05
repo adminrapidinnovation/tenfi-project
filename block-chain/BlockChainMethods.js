@@ -118,7 +118,7 @@ export const handleDeposit = async (poolId, amount, userAddress) => {
   //await getCurrentBalance('1','0xef77328e50c45cb371217777e8257e27f0b94f96',"4BELT");
   // console.log(await returnPlatformData(null));
   // console.log("data above ---------------------------")
-  console.log(await returnPlatformData(userAddress))
+  console.log(await returnPlatformData(userAddress));
   const approvalAmount =
     "100000000000000000000000000000000000000000000000000000000000000000000000000000";
 
@@ -387,7 +387,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       let reserve0 = parseFloat(await getReserves["_reserve0"]);
       let reserve1 = parseFloat(await getReserves["_reserve1"]);
       let totalLpSupply = await pancakeLPinstance.methods.totalSupply().call();
-     const token0price = await getTenPrice();
+      const token0price = await getTenPrice();
       const token1price = (
         await axios.get(
           "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
@@ -576,13 +576,12 @@ export const returnPoolData = async (userAddress) => {
   try {
     const poolLength = await getPoolLength();
     let result = [];
-    let lpStatusFunction = []
+    let lpStatusFunction = [];
     for (let i = 0; i < poolLength; i++) {
-      const lpStatus = getUserLpStatus(userAddress, i)
-      lpStatusFunction.push(lpStatus)
+      const lpStatus = getUserLpStatus(userAddress, i);
+      lpStatusFunction.push(lpStatus);
     }
-    result = await Promise.all(lpStatusFunction)
-    console.log(result)
+    result = await Promise.all(lpStatusFunction);
     return result;
   } catch (err) {
     console.log(err);
