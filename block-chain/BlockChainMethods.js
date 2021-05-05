@@ -335,7 +335,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       farmName = "PCS";
       strategyInstance = await selectInstance("PCS", poolDetails["strat"]);
       let autoPoolId = await strategyInstance.methods.pid().call();
-      autoFarmApy = pools[autoPoolId]["APY_total"];
+      autoFarmApy = 0;
       getLpTokenLink = `https://exchange.pancakeswap.finance/#/add/${token0Address}/${token1Address}`;
       tvl = await strategyInstance.methods.wantLockedTotal().call();
       assetPrice =
