@@ -118,6 +118,7 @@ export const handleDeposit = async (poolId, amount, userAddress) => {
   //await getCurrentBalance('1','0xef77328e50c45cb371217777e8257e27f0b94f96',"4BELT");
   // console.log(await returnPlatformData(null));
   // console.log("data above ---------------------------")
+  console.log(await returnPlatformData(userAddress))
   const approvalAmount =
     "100000000000000000000000000000000000000000000000000000000000000000000000000000";
 
@@ -347,21 +348,21 @@ const getUserLpStatus = async (userAddress, poolId) => {
       let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
-      // tokenYield =
-      //   tvl > 0
-      //     ? ((tenPerBlock *
-      //         28800 *
-      //         (poolAllocPoint / totalAllocPoint) *
-      //         (await getTenPrice())) /
-      //         tvl) *
-      //       365 *
-      //       100
-      //     : tenPerBlock *
-      //       28800 *
-      //       (poolAllocPoint / totalAllocPoint) *
-      //       (await getTenPrice()) *
-      //       365 *
-      //       100;
+      tokenYield =
+        tvl > 0
+          ? ((tenPerBlock *
+              28800 *
+              (poolAllocPoint / totalAllocPoint) *
+              (await getTenPrice())) /
+              tvl) *
+            365 *
+            100
+          : tenPerBlock *
+            28800 *
+            (poolAllocPoint / totalAllocPoint) *
+            (await getTenPrice()) *
+            365 *
+            100;
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
@@ -399,21 +400,21 @@ const getUserLpStatus = async (userAddress, poolId) => {
       let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
-      // tokenYield =
-      //   tvl > 0
-      //     ? ((tenPerBlock *
-      //         28800 *
-      //         (poolAllocPoint / totalAllocPoint) *
-      //         (await getTenPrice())) /
-      //         tvl) *
-      //       365 *
-      //       100
-      //     : tenPerBlock *
-      //       28800 *
-      //       (poolAllocPoint / totalAllocPoint) *
-      //       (await getTenPrice()) *
-      //       365 *
-      //       100;
+      tokenYield =
+        tvl > 0
+          ? ((tenPerBlock *
+              28800 *
+              (poolAllocPoint / totalAllocPoint) *
+              (await getTenPrice())) /
+              tvl) *
+            365 *
+            100
+          : tenPerBlock *
+            28800 *
+            (poolAllocPoint / totalAllocPoint) *
+            (await getTenPrice()) *
+            365 *
+            100;
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
@@ -439,21 +440,21 @@ const getUserLpStatus = async (userAddress, poolId) => {
       let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
-      // tokenYield =
-      //   tvl > 0
-      //     ? ((tenPerBlock *
-      //         28800 *
-      //         (poolAllocPoint / totalAllocPoint) *
-      //         (await getTenPrice())) /
-      //         tvl) *
-      //       365 *
-      //       100
-      //     : tenPerBlock *
-      //       28800 *
-      //       (poolAllocPoint / totalAllocPoint) *
-      //       (await getTenPrice()) *
-      //       365 *
-      //       100;
+      tokenYield =
+        tvl > 0
+          ? ((tenPerBlock *
+              28800 *
+              (poolAllocPoint / totalAllocPoint) *
+              (await getTenPrice())) /
+              tvl) *
+            365 *
+            100
+          : tenPerBlock *
+            28800 *
+            (poolAllocPoint / totalAllocPoint) *
+            (await getTenPrice()) *
+            365 *
+            100;
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
