@@ -3,6 +3,7 @@ import {
   DISCONNECT_WALLET,
   POOL_DATA_LOADING,
   UPDATE_POOL_DATA,
+  SET_FILTER_VALUE,
 } from "./action.config";
 
 export const connectWallet = (data) => {
@@ -29,5 +30,12 @@ export const updatePoolData = (data) => {
   return {
     type: UPDATE_POOL_DATA,
     payload: data,
+  };
+};
+
+export const setFilterValue = (filterVal) => {
+  return {
+    type: SET_FILTER_VALUE,
+    payload: filterVal,
   };
 };

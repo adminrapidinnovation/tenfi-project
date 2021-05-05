@@ -3,6 +3,7 @@ import {
   DISCONNECT_WALLET,
   POOL_DATA_LOADING,
   UPDATE_POOL_DATA,
+  SET_FILTER_VALUE,
 } from "../actions/action.config";
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
   address: null,
   poolDataLoading: false,
   poolData: [],
+  filterValue: "",
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -36,6 +38,11 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         poolData: payload,
+      };
+    case SET_FILTER_VALUE:
+      return {
+        ...state,
+        filterValue: payload,
       };
 
     default:

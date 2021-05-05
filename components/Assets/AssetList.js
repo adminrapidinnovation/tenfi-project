@@ -38,15 +38,26 @@ const renderIcon = (rowId, token) => {
 
 function AssetList(props) {
   const selector = useSelector((state) => state);
-  const { poolData, poolDataLoading } = selector.user;
+  const { poolData, poolDataLoading, filterValue } = selector.user;
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  function toggleActive(index) {
+  const toggleActive = (index) => {
     setActiveIndex(index === activeIndex ? -1 : index);
-  }
+  };
 
+  const getPoolDataArray = () => {
+    if (filterValue === "") {
+      return poolData;
+    } else {
+      const filterData = poolData.filter((e) =>
+        e.token.toLowerCase().includes(filterValue.toLowerCase())
+      );
+      return filterData;
+    }
+  };
   const renderRowItem = () => {
-    return poolData.map((item, index) => {
+    const newPoolData = getPoolDataArray();
+    return newPoolData.map((item, index) => {
       if (poolData[index] !== undefined) {
         return (
           <Fragment key={index}>
