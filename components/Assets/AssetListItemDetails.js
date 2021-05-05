@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "styles/modules/Assets/AssetListItemDetails.module.scss";
-import { harvestLpTokens } from "block-chain/BlockChainMethods";
+import { harvestLpTokens, getTenPrice } from "block-chain/BlockChainMethods";
 
-export default function AssetListItemDetails(props) {
+const AssetListItemDetails = (props) => {
   const selector = useSelector((state) => state);
+  const [tenPrice, setTenPrice] = useState(0);
   const { item } = props;
+
+  useEffect(() => {
+    const getPrice = async () => {
+      try {
+        const price = await getTenPrice();
+        setTenPrice(price);
+      } catch {}
+    };
+    getPrice();
+  }, []);
 
   const handleClaim = async () => {
     if (selector.user.isLoggedIn) {
@@ -15,6 +26,11 @@ export default function AssetListItemDetails(props) {
         console.log("error==>", error);
       }
     }
+  };
+
+  const getClaimDollarValue = () => {
+    const val = parseFloat(tenPrice) * parseFloat(item.pendingTenEarnings);
+    return parseFloat(val).toFixed(2);
   };
   return (
     <section className={styles.el}>
@@ -31,8 +47,10 @@ export default function AssetListItemDetails(props) {
       <p className={styles.total}>
         TENFI Pending:
         <span className={styles.value}>
-          <span className="text-danger">0.00000 </span>
-          ($0.00)
+          <span className="text-danger">
+            {parseFloat(item.pendingTenEarnings).toFixed(2)}
+          </span>{" "}
+          (${getClaimDollarValue()})
         </span>
       </p>
       <div className="d-grid">
@@ -50,4 +68,6 @@ export default function AssetListItemDetails(props) {
       </div>
     </section>
   );
-}
+};
+
+export default AssetListItemDetails;

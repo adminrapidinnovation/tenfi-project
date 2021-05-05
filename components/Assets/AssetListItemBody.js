@@ -2,43 +2,12 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import BuyTenfiModal from "../BuyTenfiModal";
 import AddLiquidityModal from "../AddLiquidityModal";
-import AssetListItemAttributes from "./AssetListItemAttributes";
+import AssetDetails from "./AssetDetails";
+import AssetApyDetails from "./AssetApyDetails";
 import AssetListItemDetails from "./AssetListItemDetails";
 import NumberField from "../NumberField";
 import styles from "styles/modules/Assets/AssetListItemBody.module.scss";
 import { handleDeposit, handleWithdraw } from "block-chain/BlockChainMethods";
-
-const details = [
-  {
-    term: "Asset",
-    desc: "TENFI",
-  },
-  {
-    term: "TVL",
-    desc: "$110,562,156.00",
-  },
-  {
-    term: "Vault Contract",
-    desc: `<a href="#">View</a>`,
-  },
-];
-const calcs = [
-  {
-    term: "Farm APY",
-    desc: "67%",
-    daily: "0.06%",
-  },
-  {
-    term: "Rewards APR",
-    desc: "3450%",
-    daily: "54.56%",
-  },
-  {
-    term: "Total",
-    desc: "3517% (54.62% Daily)",
-    daily: "54.62%",
-  },
-];
 
 const AssetListItemBody = (props) => {
   const selector = useSelector((state) => state);
@@ -84,10 +53,7 @@ const AssetListItemBody = (props) => {
                 <div className={styles.item}>
                   <div className={styles.attr}>
                     <strong>Balance</strong>
-                    <span>
-                      {parseFloat(item.liquidBalance).toFixed(2)}
-                      {/* <span className="text-muted"> ($0.00)</span> */}
-                    </span>
+                    <span>{parseFloat(item.liquidBalance).toFixed(2)}</span>
                   </div>
                   <div className="text-end lh-1">
                     {props.index === 0 ? (
@@ -156,13 +122,10 @@ const AssetListItemBody = (props) => {
             </div>
             <div className={`row ${styles.row}`}>
               <div className={`col-12 col-md-6 ${styles.col}`}>
-                <AssetListItemAttributes title="Details" items={details} />
+                <AssetDetails item={item} />
               </div>
               <div className={`col-12 col-md-6 ${styles.col}`}>
-                <AssetListItemAttributes
-                  title="APY Calculations"
-                  items={calcs}
-                />
+                <AssetApyDetails item={item} />
               </div>
             </div>
           </div>

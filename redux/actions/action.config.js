@@ -11,8 +11,3 @@ export const UPDATE_POOL_DATA = "UPDATE_POOL_DATA";
 /* =================================== POOL DATA ============================= */
 
 export const SET_FILTER_VALUE = "SET_FILTER_VALUE";
-
-//
-
-export const SET_ASSETS = "SET_ASSETS";
-export const FILTER_ASSETS_LIST = "FILTER_ASSETS_LIST";
