@@ -18,21 +18,21 @@ let tokenList = {
 };
 
 export const getTenPrice = async () => {
-  const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
-  let poolDetails = await tenfarmInstance.methods.poolInfo("0").call();
-  const lpAddress = poolDetails["want"];
-  const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
-  const bnbPrice = (
-    await axios.get(
-      "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
-    )
-  ).data.wbnb.usd;
-  let getReserves = await pancakeLPinstance.methods.getReserves().call();
-  let reserve0 = parseFloat(await getReserves["_reserve0"]);
-  let reserve1 = parseFloat(await getReserves["_reserve1"]);
-  let bnbPerTEN = reserve1 / reserve0;
-  const tenfinalPrice = bnbPerTEN * bnbPrice;
-  return tenfinalPrice;
+  // const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+  // let poolDetails = await tenfarmInstance.methods.poolInfo("0").call();
+  // const lpAddress = poolDetails["want"];
+  // const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
+  // const bnbPrice = (
+  //   await axios.get(
+  //     "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
+  //   )
+  // ).data.wbnb.usd;
+  // let getReserves = await pancakeLPinstance.methods.getReserves().call();
+  // let reserve0 = parseFloat(await getReserves["_reserve0"]);
+  // let reserve1 = parseFloat(await getReserves["_reserve1"]);
+  // let bnbPerTEN = reserve1 / reserve0;
+  // const tenfinalPrice = bnbPerTEN * bnbPrice;
+  return 2700;
 };
 
 export const getWeb3Val = async () => {
@@ -327,8 +327,8 @@ const getUserLpStatus = async (userAddress, poolId) => {
       let totalLpSupply = await pancakeLPinstance.methods.totalSupply().call();
       let token0Address = await pancakeLPinstance.methods.token0().call();
       let token1Address = await pancakeLPinstance.methods.token1().call();
-      // let reserve0tokenPrice = parseFloat(token.data[token0Address].price);
-      // let reserve1tokenPrice = parseFloat(token.data[token1Address].price);
+      let reserve0tokenPrice = 1.1;
+      let reserve1tokenPrice = 1;
       tokenType = "LP";
       tokenTypeBoolean = true;
       farmName = "PCS";
@@ -337,9 +337,9 @@ const getUserLpStatus = async (userAddress, poolId) => {
       autoFarmApy = pools[autoPoolId]["APY_total"];
       getLpTokenLink = `https://exchange.pancakeswap.finance/#/add/${token0Address}/${token1Address}`;
       tvl = await strategyInstance.methods.wantLockedTotal().call();
-      // assetPrice =
-      //   (reserve0 * reserve0tokenPrice + reserve1 * reserve1tokenPrice) /
-      //   totalLpSupply;
+      assetPrice =
+        (reserve0 * reserve0tokenPrice + reserve1 * reserve1tokenPrice) /
+        totalLpSupply;
       tvl = convertToEther(tvl) * assetPrice;
       tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
       tenPerBlock = convertToEther(tenPerBlock);
@@ -386,14 +386,14 @@ const getUserLpStatus = async (userAddress, poolId) => {
       let reserve0 = parseFloat(await getReserves["_reserve0"]);
       let reserve1 = parseFloat(await getReserves["_reserve1"]);
       let totalLpSupply = await pancakeLPinstance.methods.totalSupply().call();
-      // const token0price = await getTenPrice();
-      // const token1price = (
-      //   await axios.get(
-      //     "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
-      //   )
-      // ).data.wbnb.usd;
-      // assetPrice =
-      //   (reserve0 * token0price + reserve1 * token1price) / totalLpSupply;
+     const token0price = await getTenPrice();
+      const token1price = (
+        await axios.get(
+          "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
+        )
+      ).data.wbnb.usd;
+      assetPrice =
+        (reserve0 * token0price + reserve1 * token1price) / totalLpSupply;
       tokenTypeBoolean = true;
       tvl = convertToEther(tvl) * assetPrice;
       let totalAllocPoint = await tenfarmInstance.methods
@@ -431,7 +431,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       strategyInstance = await selectInstance("TEN", poolDetails["strat"]);
       tvl = await strategyInstance.methods.wantLockedTotal().call();
       tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
-      // assetPrice = await getTenPrice();
+      assetPrice = await getTenPrice();
       tokenTypeBoolean = false;
       tvl = convertToEther(tvl) * assetPrice;
       tenPerBlock = convertToEther(tenPerBlock);
@@ -473,7 +473,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
         `${parseFloat(currentBalance).toFixed(2)}` + tokenType;
       obj["currentBalance"] = parseFloat(currentBalance) * assetPrice;
       obj["rewardToken"] = await getPendingTENClaim(userAddress, poolId);
-      // obj["reward"] = obj["rewardToken"] * (await getTenPrice());
+      obj["reward"] = obj["rewardToken"] * (await getTenPrice());
       obj["assetTokenPrice"] = assetPrice;
       obj["farmName"] = farmName;
       obj[
@@ -575,10 +575,13 @@ export const returnPoolData = async (userAddress) => {
   try {
     const poolLength = await getPoolLength();
     let result = [];
+    let lpStatusFunction = []
     for (let i = 0; i < poolLength; i++) {
-      const lpStatus = await getUserLpStatus(userAddress, i);
-      result.push(lpStatus);
+      const lpStatus = getUserLpStatus(userAddress, i)
+      lpStatusFunction.push(lpStatus)
     }
+    result = await Promise.all(lpStatusFunction)
+    console.log(result)
     return result;
   } catch (err) {
     console.log(err);
