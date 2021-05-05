@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "styles/modules/Assets/AssetListItemDetails.module.scss";
 import { harvestLpTokens, getTenPrice } from "block-chain/BlockChainMethods";
+import { refreshPoolData } from "global-function/globalFunction";
 
 const AssetListItemDetails = (props) => {
   const selector = useSelector((state) => state);
+  const dispatch = useDispatch();
   const [tenPrice, setTenPrice] = useState(0);
   const { item } = props;
 
@@ -24,12 +26,14 @@ const AssetListItemDetails = (props) => {
         await harvestLpTokens(item.id, selector.user.address);
       } catch (error) {
         console.log("error==>", error);
+      } finally {
+        refreshPoolData(selector.user.address, dispatch);
       }
     }
   };
 
   const getClaimDollarValue = () => {
-    const val = parseFloat(tenPrice) * parseFloat(item.pendingTENEarnings);
+    const val = parseFloat(tenPrice) * parseFloat(item.pendingTenEarnings);
     return parseFloat(val).toFixed(2);
   };
   return (
@@ -48,7 +52,7 @@ const AssetListItemDetails = (props) => {
         TENFI Pending:
         <span className={styles.value}>
           <span className="text-danger">
-            {parseFloat(item.pendingTENEarnings).toFixed(2)}
+            {parseFloat(item.pendingTenEarnings).toFixed(2)}
           </span>{" "}
           (${getClaimDollarValue()})
         </span>

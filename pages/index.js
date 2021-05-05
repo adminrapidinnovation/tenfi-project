@@ -13,6 +13,7 @@ import Header from "../components/Header/Header";
 import PromotionBanner from "../components/PromotionBanner";
 import styles from "../styles/modules/Home.module.scss";
 import { returnPoolData } from "block-chain/BlockChainMethods";
+import { refreshPoolData } from "global-function/globalFunction";
 
 const rewards = [
   {
@@ -50,6 +51,13 @@ export const Home = () => {
       }
     };
     getPoolDataVal();
+  }, [selector.user.address]);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      refreshPoolData(selector.user.address, dispatch);
+    }, 10000);
+    return () => clearInterval(interval);
   }, [selector.user.address]);
 
   return (

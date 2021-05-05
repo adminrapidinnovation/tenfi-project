@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import BuyTenfiModal from "../BuyTenfiModal";
 import AddLiquidityModal from "../AddLiquidityModal";
 import AssetDetails from "./AssetDetails";
@@ -8,9 +8,11 @@ import AssetListItemDetails from "./AssetListItemDetails";
 import NumberField from "../NumberField";
 import styles from "styles/modules/Assets/AssetListItemBody.module.scss";
 import { handleDeposit, handleWithdraw } from "block-chain/BlockChainMethods";
+import { refreshPoolData } from "global-function/globalFunction";
 
 const AssetListItemBody = (props) => {
   const selector = useSelector((state) => state);
+  const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const [liquidityModalOpen, setLiquidityModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState(0);
@@ -23,6 +25,8 @@ const AssetListItemBody = (props) => {
         handleDeposit(props.item.id, depositAmount, selector.user.address);
       } catch (err) {
         console.log(err);
+      } finally {
+        refreshPoolData(selector.user.address, dispatch);
       }
     }
   };
@@ -33,6 +37,8 @@ const AssetListItemBody = (props) => {
         handleWithdraw(props.item.id, withdrawAmount, selector.user.address);
       } catch (err) {
         console.log(err);
+      } finally {
+        refreshPoolData(selector.user.address, dispatch);
       }
     }
   };
