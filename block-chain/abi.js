@@ -1,6 +1,6 @@
 export const tenAddress = "0x5c059D023c87d5d6B7bea49Ce7cbaA953db67b1D";
 
-export const tenFarmAddress = "0xd2E014e5046BdabCb24DeA7DA39225fB9251dF6e";
+export const tenFarmAddress = "0xa1710AdB2a99b0da660AD0fD707B655b91ec855b";
 
 export const bnbAddress = "0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F";
 
@@ -1568,10 +1568,26 @@ export const tenStrategyPcsAbi = [
 export const tenStrategyTenAbi = [
   {
     inputs: [
-      { internalType: "address[]", name: "_addresses", type: "address[]" },
-      { internalType: "bool", name: "_isCAKEStaking", type: "bool" },
-      { internalType: "bool", name: "_isSameAssetDeposit", type: "bool" },
-      { internalType: "bool", name: "_isTenComp", type: "bool" },
+      {
+        internalType: "address[]",
+        name: "_addresses",
+        type: "address[]",
+      },
+      {
+        internalType: "bool",
+        name: "_isCAKEStaking",
+        type: "bool",
+      },
+      {
+        internalType: "bool",
+        name: "_isSameAssetDeposit",
+        type: "bool",
+      },
+      {
+        internalType: "bool",
+        name: "_isTenComp",
+        type: "bool",
+      },
       {
         internalType: "address[]",
         name: "_earnedToTENPath",
@@ -1597,10 +1613,26 @@ export const tenStrategyTenAbi = [
         name: "_token1ToEarnedPath",
         type: "address[]",
       },
-      { internalType: "uint256", name: "_controllerFee", type: "uint256" },
-      { internalType: "uint256", name: "_buyBackRate", type: "uint256" },
-      { internalType: "uint256", name: "_entranceFeeFactor", type: "uint256" },
-      { internalType: "uint256", name: "_withdrawFeeFactor", type: "uint256" },
+      {
+        internalType: "uint256",
+        name: "_controllerFee",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_buyBackRate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_entranceFeeFactor",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_withdrawFeeFactor",
+        type: "uint256",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -1666,7 +1698,12 @@ export const tenStrategyTenAbi = [
   {
     anonymous: false,
     inputs: [
-      { indexed: false, internalType: "bool", name: "_onlyGov", type: "bool" },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "_onlyGov",
+        type: "bool",
+      },
     ],
     name: "SetOnlyGov",
     type: "event",
@@ -1788,42 +1825,80 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "TENAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "buyBackAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "buyBackRate",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "buyBackRateMax",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "buyBackRateUL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      { internalType: "address", name: "_depositFeeAddress", type: "address" },
-      { internalType: "address", name: "_withdrawFeeAddress", type: "address" },
+      {
+        internalType: "address",
+        name: "_depositFeeAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_withdrawFeeAddress",
+        type: "address",
+      },
     ],
     name: "changeFeeAddress",
     outputs: [],
@@ -1846,21 +1921,39 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "controllerFee",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "controllerFeeMax",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "controllerFeeUL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -1873,18 +1966,38 @@ export const tenStrategyTenAbi = [
   },
   {
     inputs: [
-      { internalType: "address", name: "_userAddress", type: "address" },
-      { internalType: "uint256", name: "_wantAmt", type: "uint256" },
+      {
+        internalType: "address",
+        name: "_userAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_wantAmt",
+        type: "uint256",
+      },
     ],
     name: "deposit",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
     name: "depositFeeAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -1898,49 +2011,109 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "earnedAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     name: "earnedToTENPath",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     name: "earnedToToken0Path",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     name: "earnedToToken1Path",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "entranceFeeFactor",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "entranceFeeFactorLL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "entranceFeeFactorMax",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -1954,29 +2127,59 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "farmContractAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "feeAddressesSetter",
-    outputs: [{ internalType: "address payable", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address payable",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "govAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      { internalType: "address", name: "_token", type: "address" },
-      { internalType: "uint256", name: "_amount", type: "uint256" },
-      { internalType: "address", name: "_to", type: "address" },
+      {
+        internalType: "address",
+        name: "_token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
     ],
     name: "inCaseTokensGetStuck",
     outputs: [],
@@ -1986,56 +2189,104 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "isCAKEStaking",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "isSameAssetDeposit",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "isTenComp",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "lastEarnBlock",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "minTimeToWithdraw",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "minTimeToWithdrawUL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "onlyGov",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "owner",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -2049,14 +2300,26 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "paused",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "pid",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -2070,13 +2333,23 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "rewardsAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      { internalType: "address", name: "_buyBackAddress", type: "address" },
+      {
+        internalType: "address",
+        name: "_buyBackAddress",
+        type: "address",
+      },
     ],
     name: "setBuyBackAddress",
     outputs: [],
@@ -2084,7 +2357,13 @@ export const tenStrategyTenAbi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "_govAddress", type: "address" }],
+    inputs: [
+      {
+        internalType: "address",
+        name: "_govAddress",
+        type: "address",
+      },
+    ],
     name: "setGov",
     outputs: [],
     stateMutability: "nonpayable",
@@ -2104,7 +2383,13 @@ export const tenStrategyTenAbi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "bool", name: "_onlyGov", type: "bool" }],
+    inputs: [
+      {
+        internalType: "bool",
+        name: "_onlyGov",
+        type: "bool",
+      },
+    ],
     name: "setOnlyGov",
     outputs: [],
     stateMutability: "nonpayable",
@@ -2112,7 +2397,11 @@ export const tenStrategyTenAbi = [
   },
   {
     inputs: [
-      { internalType: "address", name: "_rewardsAddress", type: "address" },
+      {
+        internalType: "address",
+        name: "_rewardsAddress",
+        type: "address",
+      },
     ],
     name: "setRewardsAddress",
     outputs: [],
@@ -2121,11 +2410,31 @@ export const tenStrategyTenAbi = [
   },
   {
     inputs: [
-      { internalType: "uint256", name: "_entranceFeeFactor", type: "uint256" },
-      { internalType: "uint256", name: "_withdrawFeeFactor", type: "uint256" },
-      { internalType: "uint256", name: "_controllerFee", type: "uint256" },
-      { internalType: "uint256", name: "_buyBackRate", type: "uint256" },
-      { internalType: "uint256", name: "_slippageFactor", type: "uint256" },
+      {
+        internalType: "uint256",
+        name: "_entranceFeeFactor",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_withdrawFeeFactor",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_controllerFee",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_buyBackRate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_slippageFactor",
+        type: "uint256",
+      },
     ],
     name: "setSettings",
     outputs: [],
@@ -2134,7 +2443,11 @@ export const tenStrategyTenAbi = [
   },
   {
     inputs: [
-      { internalType: "address", name: "_uniRouterAddress", type: "address" },
+      {
+        internalType: "address",
+        name: "_uniRouterAddress",
+        type: "address",
+      },
     ],
     name: "setUniRouterAddress",
     outputs: [],
@@ -2144,61 +2457,127 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "sharesTotal",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "slippageFactor",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "slippageFactorUL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "tenFarmAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "token0Address",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     name: "token0ToEarnedPath",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "token1Address",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     name: "token1ToEarnedPath",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
@@ -2207,7 +2586,13 @@ export const tenStrategyTenAbi = [
   {
     inputs: [],
     name: "uniRouterAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -2219,82 +2604,168 @@ export const tenStrategyTenAbi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "", type: "address" }],
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     name: "userLastDepositedTimestamp",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "userLength",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     name: "users",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "wantAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "wantLockedTotal",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "wbnbAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      { internalType: "address", name: "_userAddress", type: "address" },
-      { internalType: "uint256", name: "_wantAmt", type: "uint256" },
+      {
+        internalType: "address",
+        name: "_userAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_wantAmt",
+        type: "uint256",
+      },
     ],
     name: "withdraw",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
     name: "withdrawFeeAddress",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "withdrawFeeFactor",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "withdrawFeeFactorLL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
     name: "withdrawFeeFactorMax",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -2305,7 +2776,10 @@ export const tenStrategyTenAbi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-  { stateMutability: "payable", type: "receive" },
+  {
+    stateMutability: "payable",
+    type: "receive",
+  },
 ];
 
 export const masterchefAbi = [

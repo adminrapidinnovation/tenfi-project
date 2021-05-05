@@ -127,12 +127,23 @@ export const handleDeposit = async (poolId, amount, userAddress) => {
       const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
       const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
       const lpAddress = poolDetails["want"];
-      const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
+      let pancakeLPinstance;
+      let tenTokenInstance;
       let getAllowance = await getCurrentApproval(poolId, userAddress);
-      if (depositAmount > getAllowance) {
-        await pancakeLPinstance.methods
-          .approve(tenFarmAddress, approvalAmount)
-          .send({ from: userAddress });
+      if (poolId != "0") {
+        pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
+        if (depositAmount > getAllowance) {
+          await pancakeLPinstance.methods
+            .approve(tenFarmAddress, approvalAmount)
+            .send({ from: userAddress });
+        }
+      } else {
+        tenTokenInstance = await selectInstance("TENTOKEN", lpAddress);
+        if (depositAmount > getAllowance) {
+          await tenTokenInstance.methods
+            .approve(tenFarmAddress, approvalAmount)
+            .send({ from: userAddress });
+        }
       }
       await tenfarmInstance.methods
         .deposit(poolId, convertToWei(depositAmount))
@@ -151,7 +162,7 @@ export const handleWithdraw = async (poolId, amount, userAddress) => {
       let getCurrentDeposit = await getCurrentLpDeposit(userAddress, poolId);
       if (withdrawAmount <= parseFloat(getCurrentDeposit))
         await tenfarmInstance.methods
-          .withdraw(poolId, convertToWei(withdrawAmount))
+          .withdraw(poolId, convertToWei(amount))
           .send({ from: userAddress });
     } catch (err) {
       console.log(err);
@@ -161,8 +172,8 @@ export const handleWithdraw = async (poolId, amount, userAddress) => {
 
 const getFinalBalance = (val) => {
   const newVal = parseFloat(val).toString();
-  const finalValue = newVal.substring(0, newVal.length - 1);
-  return `${finalValue}0`;
+  const finalValue = newVal.substring(0, newVal.length);
+  return `${finalValue}`;
 };
 
 const getLPbalance = async (currentUserAddress, poolId, typeOfPool) => {
@@ -170,10 +181,7 @@ const getLPbalance = async (currentUserAddress, poolId, typeOfPool) => {
     const userAddress = currentUserAddress;
     const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
     const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
-    console.log(poolDetails);
     const lpAddress = poolDetails["want"];
-    console.log(lpAddress);
-    console.log(poolId);
     let balance = "";
     if (typeOfPool === "PCS") {
       const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
@@ -416,7 +424,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       tokenList[poolId][0] === "TENFI"
     ) {
       const lpAddress = poolDetails["want"];
-      pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
+      pancakeLPinstance = await selectInstance("TENTOKEN", lpAddress);
       tokenType = "";
       farmName = "TEN";
       getLpTokenLink = null;
@@ -571,6 +579,7 @@ export const returnPoolData = async (userAddress) => {
       const lpStatus = await getUserLpStatus(userAddress, i);
       result.push(lpStatus);
     }
+    console.log(result)
     return result;
   } catch (err) {
     console.log(err);
@@ -626,12 +635,21 @@ export const getCurrentApproval = async (poolId, userAddress) => {
     const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
     const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
     const lpAddress = poolDetails["want"];
-    const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
-    var getAllowance = await pancakeLPinstance.methods
-      .allowance(userAddress, tenFarmAddress)
-      .call();
-    getAllowance = convertToEther(getAllowance);
-    return getAllowance;
+    if (poolId != 0) {
+      const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
+      var getAllowance = await pancakeLPinstance.methods
+        .allowance(userAddress, tenFarmAddress)
+        .call();
+      getAllowance = convertToEther(getAllowance);
+      return getAllowance;
+    } else {
+      const tenTokenInstance = await selectInstance("TENTOKEN", lpAddress);
+      var getAllowance = await tenTokenInstance.methods
+        .allowance(userAddress, tenFarmAddress)
+        .call();
+      getAllowance = convertToEther(getAllowance);
+      return getAllowance;
+    }
   } catch (err) {
     console.log(err);
   }
