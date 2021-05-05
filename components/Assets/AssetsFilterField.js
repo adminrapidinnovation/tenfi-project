@@ -17,7 +17,7 @@ function AssetsFilterField(props) {
         className="form-control"
         onChange={(e) => handleFilter(e)}
         id="exampleFormControlInput1"
-        placeholder="Filter by Token, Protocol...."
+        placeholder="Filter by Token...."
       />
       <button className={styles.btn} type="button">
         <SearchIcon />
