@@ -8,6 +8,7 @@ const AssetListItemDetails = (props) => {
   const selector = useSelector((state) => state);
   const dispatch = useDispatch();
   const [tenPrice, setTenPrice] = useState(0);
+  const [claimLoading, setClaimLoading] = useState(false);
   const { item } = props;
 
   useEffect(() => {
@@ -23,11 +24,13 @@ const AssetListItemDetails = (props) => {
   const handleClaim = async () => {
     if (selector.user.isLoggedIn) {
       try {
+        setClaimLoading(true);
         await harvestLpTokens(item.id, selector.user.address);
       } catch (error) {
         console.log("error==>", error);
       } finally {
-        refreshPoolData(selector.user.address, dispatch);
+        setClaimLoading(false);
+        await refreshPoolData(selector.user.address, dispatch);
       }
     }
   };
@@ -58,8 +61,12 @@ const AssetListItemDetails = (props) => {
         </span>
       </p>
       <div className="d-grid">
-        <button className="btn btn-outline-white" onClick={() => handleClaim()}>
-          Claim
+        <button
+          className="btn btn-outline-white"
+          onClick={() => handleClaim()}
+          disabled={claimLoading}
+        >
+          {claimLoading ? "Loading..." : "Claim"}
         </button>
       </div>
       <div className={styles.text}>

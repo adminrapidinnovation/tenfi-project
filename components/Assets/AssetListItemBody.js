@@ -17,28 +17,42 @@ const AssetListItemBody = (props) => {
   const [liquidityModalOpen, setLiquidityModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [depositLoading, setDepositLoading] = useState(false);
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
   const { item } = props;
 
   const depositHandler = async () => {
     if (depositAmount > 0 && selector.user.isLoggedIn) {
       try {
-        handleDeposit(props.item.id, depositAmount, selector.user.address);
+        setDepositLoading(true);
+        await handleDeposit(
+          props.item.id,
+          depositAmount,
+          selector.user.address
+        );
       } catch (err) {
         console.log(err);
       } finally {
-        refreshPoolData(selector.user.address, dispatch);
+        setDepositLoading(false);
+        await refreshPoolData(selector.user.address, dispatch);
       }
     }
   };
 
-  const withdrawHandler = () => {
+  const withdrawHandler = async () => {
     if (withdrawAmount > 0 && selector.user.isLoggedIn) {
       try {
-        handleWithdraw(props.item.id, withdrawAmount, selector.user.address);
+        setWithdrawLoading(true);
+        await handleWithdraw(
+          props.item.id,
+          withdrawAmount,
+          selector.user.address
+        );
       } catch (err) {
         console.log(err);
       } finally {
-        refreshPoolData(selector.user.address, dispatch);
+        setWithdrawLoading(false);
+        await refreshPoolData(selector.user.address, dispatch);
       }
     }
   };
@@ -91,10 +105,11 @@ const AssetListItemBody = (props) => {
                   <div className="d-grid">
                     <button
                       type="button"
-                      className="btn btn-primary"
+                      className={`btn btn-primary isLoading`}
                       onClick={depositHandler}
+                      disabled={depositLoading}
                     >
-                      Deposit
+                      {depositLoading ? "Loading..." : "Deposit"}
                     </button>
                   </div>
                 </div>
@@ -119,8 +134,9 @@ const AssetListItemBody = (props) => {
                       type="button"
                       className="btn btn-primary"
                       onClick={withdrawHandler}
+                      disabled={withdrawLoading}
                     >
-                      Withdraw
+                      {withdrawLoading ? "Loading..." : "Withdraw"}
                     </button>
                   </div>
                 </div>
