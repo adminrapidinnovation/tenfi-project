@@ -465,7 +465,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       obj["id"] = poolId;
       obj["liquidBalance"] = LPbalance;
       obj["currentLpDeposit"] = await getCurrentLpDeposit(userAddress, poolId);
-      obj["pendingTENEarnings"] = await getPendingTENClaim(userAddress, poolId);
+      obj["pendingTenEarnings"] = await getPendingTENClaim(userAddress, poolId);
       obj["token"] = tokenList[poolId][0];
       obj["tokenTvl"] = tvl;
       obj["tokenYield"] = tokenYield;
