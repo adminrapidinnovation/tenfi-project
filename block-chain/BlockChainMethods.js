@@ -579,7 +579,6 @@ export const returnPoolData = async (userAddress) => {
       const lpStatus = await getUserLpStatus(userAddress, i);
       result.push(lpStatus);
     }
-    console.log(result)
     return result;
   } catch (err) {
     console.log(err);
