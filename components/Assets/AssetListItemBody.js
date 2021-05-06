@@ -7,7 +7,7 @@ import AssetApyDetails from "./AssetApyDetails";
 import AssetListItemDetails from "./AssetListItemDetails";
 import NumberField from "../NumberField";
 import styles from "styles/modules/Assets/AssetListItemBody.module.scss";
-import { handleDeposit, handleWithdraw } from "block-chain/BlockChainMethods";
+import { handleOnDeposit, handleOnWithdraw } from "contract/ContractMethods";
 import { refreshPoolData } from "global-function/globalFunction";
 
 const AssetListItemBody = (props) => {
@@ -25,7 +25,7 @@ const AssetListItemBody = (props) => {
     if (depositAmount > 0 && selector.user.isLoggedIn) {
       try {
         setDepositLoading(true);
-        await handleDeposit(
+        await handleOnDeposit(
           props.item.id,
           depositAmount,
           selector.user.address
@@ -43,7 +43,7 @@ const AssetListItemBody = (props) => {
     if (withdrawAmount > 0 && selector.user.isLoggedIn) {
       try {
         setWithdrawLoading(true);
-        await handleWithdraw(
+        await handleOnWithdraw(
           props.item.id,
           withdrawAmount,
           selector.user.address

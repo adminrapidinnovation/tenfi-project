@@ -6,25 +6,23 @@ import Modal from "./Modal";
 import { BscConnector } from "@binance-chain/bsc-connector";
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
-import { connectToMetamask } from "block-chain/BlockChainMethods";
+import { connectToMetamask } from "contract/ContractMethods";
 
 const items = [
   {
-    type: "metamask",
+    type: 1,
     src: require("assets/images/Metamask-1.svg"),
-    href: "#",
     title: "MetaMask",
   },
   {
-    type: "bsc",
+    type: 2,
     src: require("assets/images/BinanceChainWallet.png"),
     title: "Binance Chain Wallet",
   },
 
   {
-    type: "walletConnect",
+    type: 3,
     src: require("assets/images/walletconnect-circle-blue.svg"),
-    href: "#",
     title: "Wallet Connect",
   },
 ];
@@ -34,7 +32,7 @@ const ConnectWalletModal = ({ onClose, setUserData }) => {
   const handleWalletConnect = async (type) => {
     switch (type) {
       // ////////////////////////////////////////////////////////
-      case "metamask":
+      case 1:
         try {
           const accounts = await connectToMetamask();
           if (!!accounts && accounts.length > 0) {
@@ -49,7 +47,7 @@ const ConnectWalletModal = ({ onClose, setUserData }) => {
         }
         break;
       // ///////////////////////////////////////////////////////////////////////
-      case "bsc":
+      case 2:
         console.log("bsc");
         const bsc = new BscConnector({
           supportedChainIds: [56, 97],
@@ -57,8 +55,10 @@ const ConnectWalletModal = ({ onClose, setUserData }) => {
         try {
           await bsc.activate();
           const accounts = await bsc.getAccount();
+
           if (accounts) {
-            dispatch(connectEthWallet(accounts));
+            console.log("accounts===>", accounts);
+            dispatch(connectWallet(accounts));
           } else {
             dispatch(disconnectWallet());
           }
@@ -69,7 +69,7 @@ const ConnectWalletModal = ({ onClose, setUserData }) => {
         }
         break;
       // ////////////////////////////////////////////////////////////
-      case "walletConnect":
+      case 3:
         console.log("wallet connect");
 
         try {

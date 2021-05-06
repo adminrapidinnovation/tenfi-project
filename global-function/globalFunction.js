@@ -1,9 +1,9 @@
-import { returnPoolData } from "block-chain/BlockChainMethods";
+import { fetchAssetsPoolData } from "contract/ContractMethods";
 import { updatePoolData } from "redux/actions/user.actions";
 
 export const refreshPoolData = async (address, dispatch) => {
   try {
-    const res = await returnPoolData(address);
+    const res = await fetchAssetsPoolData(address);
     if (!!res && typeof res !== "undefined") {
       dispatch(updatePoolData(res));
     }

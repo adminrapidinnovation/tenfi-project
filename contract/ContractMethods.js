@@ -114,11 +114,10 @@ export const convertToEther = (totalAmount) => {
   return parseFloat(web3.utils.fromWei(totalAmount.toString(), "ether"));
 };
 
-export const handleDeposit = async (poolId, amount, userAddress) => {
+export const handleOnDeposit = async (poolId, amount, userAddress) => {
   //await getCurrentBalance('1','0xef77328e50c45cb371217777e8257e27f0b94f96',"4BELT");
-  // console.log(await returnPlatformData(null));
+  // console.log(await fetchPlatformData(null));
   // console.log("data above ---------------------------")
-  console.log(await returnPlatformData(userAddress));
   const approvalAmount =
     "100000000000000000000000000000000000000000000000000000000000000000000000000000";
 
@@ -155,7 +154,7 @@ export const handleDeposit = async (poolId, amount, userAddress) => {
   }
 };
 
-export const handleWithdraw = async (poolId, amount, userAddress) => {
+export const handleOnWithdraw = async (poolId, amount, userAddress) => {
   if (userAddress) {
     try {
       const withdrawAmount = parseFloat(amount);
@@ -177,7 +176,7 @@ const getFinalBalance = (val) => {
   return `${finalValue}`;
 };
 
-const getLPbalance = async (currentUserAddress, poolId, typeOfPool) => {
+const getLPBalance = async (currentUserAddress, poolId, typeOfPool) => {
   try {
     const userAddress = currentUserAddress;
     const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
@@ -290,7 +289,7 @@ const getCurrentLpDeposit = async (currentUserAddress, poolId) => {
 //     return result;
 //   }
 // };
-const getUserLpStatus = async (userAddress, poolId) => {
+const fetchLiquidityPoolData = async (userAddress, poolId) => {
   try {
     var obj = {};
     const autoAPiData = (
@@ -366,7 +365,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
-        LPbalance = await getLPbalance(userAddress, poolId, "PCS");
+        LPbalance = await getLPBalance(userAddress, poolId, "PCS");
       }
     } else if (
       tokenList[poolId][1] === "TENFI" &&
@@ -418,7 +417,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
-        LPbalance = await getLPbalance(userAddress, poolId, "PCS");
+        LPbalance = await getLPBalance(userAddress, poolId, "PCS");
       }
     } else if (
       tokenList[poolId][1] === "TENFI" &&
@@ -458,7 +457,7 @@ const getUserLpStatus = async (userAddress, poolId) => {
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
-        LPbalance = await getLPbalance(userAddress, poolId, "TEN");
+        LPbalance = await getLPBalance(userAddress, poolId, "TEN");
       }
     }
     if (userAddress != null) {
@@ -543,19 +542,19 @@ export const getPendingTENClaim = async (currentUserAddress, poolId) => {
   }
 };
 
-export const harvestLpTokens = async (id, userAddress) => {
+export const harvestTenFiLpTokens = async (id, userAddress) => {
   try {
-    await handleWithdraw(id, 0, userAddress);
+    await handleOnWithdraw(id, 0, userAddress);
   } catch (err) {
     console.log(err);
   }
 };
 
-export const harvestAllLpTokens = async (userAddress) => {
+export const harvestAllTenFiLpTokens = async (userAddress) => {
   try {
     const poolLength = await getPoolLength();
     for (let i = 0; i < poolLength; i++) {
-      await handleWithdraw(i, 0, userAddress);
+      await handleOnWithdraw(i, 0, userAddress);
     }
   } catch (err) {
     console.log(err);
@@ -572,13 +571,13 @@ const getPoolLength = async () => {
   }
 };
 
-export const returnPoolData = async (userAddress) => {
+export const fetchAssetsPoolData = async (userAddress) => {
   try {
     const poolLength = await getPoolLength();
     let result = [];
     let lpStatusFunction = [];
     for (let i = 0; i < poolLength; i++) {
-      const lpStatus = getUserLpStatus(userAddress, i);
+      const lpStatus = fetchLiquidityPoolData(userAddress, i);
       lpStatusFunction.push(lpStatus);
     }
     result = await Promise.all(lpStatusFunction);
@@ -588,9 +587,9 @@ export const returnPoolData = async (userAddress) => {
   }
 };
 
-export const returnPlatformData = async (userAddress) => {
+export const fetchPlatformData = async (userAddress) => {
   try {
-    const poolDetails = await returnPoolData(userAddress);
+    const poolDetails = await fetchAssetsPoolData(userAddress);
     const poolLength = poolDetails.length;
     let totalTvl = 0;
     let myPortfolioCurrentApy = 0;

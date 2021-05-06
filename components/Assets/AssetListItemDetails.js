@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "styles/modules/Assets/AssetListItemDetails.module.scss";
-import { harvestLpTokens, getTenPrice } from "block-chain/BlockChainMethods";
+import { harvestTenFiLpTokens, getTenPrice } from "contract/ContractMethods";
 import { refreshPoolData } from "global-function/globalFunction";
 
 const AssetListItemDetails = (props) => {
@@ -25,7 +25,7 @@ const AssetListItemDetails = (props) => {
     if (selector.user.isLoggedIn) {
       try {
         setClaimLoading(true);
-        await harvestLpTokens(item.id, selector.user.address);
+        await harvestTenFiLpTokens(item.id, selector.user.address);
       } catch (error) {
         console.log("error==>", error);
       } finally {

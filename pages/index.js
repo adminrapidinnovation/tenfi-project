@@ -12,7 +12,7 @@ import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import PromotionBanner from "../components/PromotionBanner";
 import styles from "../styles/modules/Home.module.scss";
-import { returnPoolData } from "block-chain/BlockChainMethods";
+import { fetchAssetsPoolData } from "contract/ContractMethods";
 import { refreshPoolData } from "global-function/globalFunction";
 
 const rewards = [
@@ -41,7 +41,7 @@ export const Home = () => {
     const getPoolDataVal = async () => {
       try {
         dispatch(setPoolDataLoading(true));
-        const res = await returnPoolData(selector.user.address);
+        const res = await fetchAssetsPoolData(selector.user.address);
         if (!!res && typeof res !== "undefined") {
           dispatch(updatePoolData(res));
         }
