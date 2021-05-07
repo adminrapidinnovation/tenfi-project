@@ -17,6 +17,7 @@ let tokenList = {
   1: { 0: "TENFI-BNB", 1: "TENFI" },
   2: { 0: "BUSD-USDC", 1: "PCS" },
 };
+import { BigNumber } from "bignumber.js"
 
 export const getTenPrice = async () => {
   // const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
@@ -72,16 +73,6 @@ export const getPublicAddress = async () => {
     return null;
   }
 };
-const decimalAdjust = (dataValue) => {
-  const exp = -17;
-  let value = dataValue;
-  value = value.toString().split("e");
-  value = Math["floor"](
-    +(value[0] + "e" + (value[1] ? +value[1] - exp : -exp))
-  );
-  value = value.toString().split("e");
-  return +(value[0] + "e" + (value[1] ? +value[1] + exp : exp));
-};
 
 export const connectToMetamask = async () => {
   const { ethereum } = window;
@@ -105,14 +96,14 @@ export const connectToMetamask = async () => {
 };
 
 export const convertToWei = (totalAmount) => {
-  const web3 = new Web3(window.ethereum);
+  const web3 = new Web3();
   return web3.utils.toWei(totalAmount.toString(), "ether");
 };
 export const convertToEther = (totalAmount) => {
-  const web3 = new Web3(window.ethereum);
-  // console.log("Idhar hai convert to ether")
-  // console.log(parseFloat(web3.utils.fromWei(totalAmount.toString(), 'ether')));
-  return parseFloat(web3.utils.fromWei(totalAmount.toString(), "ether"));
+   let x = new BigNumber(totalAmount);
+  // console.log(x.toString())
+  //return parseFloat(web3.utils.fromWei(totalAmount.toString(), 'ether'))
+  return x.div(1e18).toNumber();
 };
 
 export const handleOnDeposit = async (poolId, amount, userAddress) => {
@@ -125,21 +116,21 @@ export const handleOnDeposit = async (poolId, amount, userAddress) => {
   if (userAddress) {
     try {
       const depositAmount = parseFloat(amount);
-      const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+      const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress,true);
       const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
       const lpAddress = poolDetails["want"];
       let pancakeLPinstance;
       let tenTokenInstance;
       let getAllowance = await getCurrentApproval(poolId, userAddress);
       if (poolId != "0") {
-        pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
+        pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress,true);
         if (depositAmount > getAllowance) {
           await pancakeLPinstance.methods
             .approve(tenFarmAddress, approvalAmount)
             .send({ from: userAddress });
         }
       } else {
-        tenTokenInstance = await selectInstance("TENTOKEN", lpAddress);
+        tenTokenInstance = await selectInstance("TENTOKEN", lpAddress,true);
         if (depositAmount > getAllowance) {
           await tenTokenInstance.methods
             .approve(tenFarmAddress, approvalAmount)
@@ -159,12 +150,28 @@ export const handleOnWithdraw = async (poolId, amount, userAddress) => {
   if (userAddress) {
     try {
       const withdrawAmount = parseFloat(amount);
-      const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+      const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress,true);
       let getCurrentDeposit = await getCurrentLpDeposit(userAddress, poolId);
-      if (withdrawAmount <= parseFloat(getCurrentDeposit))
-        await tenfarmInstance.methods
-          .withdraw(poolId, convertToWei(amount))
-          .send({ from: userAddress });
+      if (withdrawAmount <= parseFloat(getCurrentDeposit)){
+
+
+        const promisify = (inner) =>
+        new Promise((resolve, reject) =>
+          inner((err, res) => {
+            if (err) { reject(err) }
+      
+            resolve(res);
+          })
+        );
+
+        
+        await promisify(cb => {
+          tenfarmInstance.methods.withdraw(poolId, convertToWei(amount)).send({ from: userAddress })
+          .once('transactionHash', function(hash){ 
+             cb()
+          });
+        });
+      }
     } catch (err) {
       console.log(err);
     }
@@ -341,7 +348,8 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       assetPrice =
         (reserve0 * reserve0tokenPrice + reserve1 * reserve1tokenPrice) /
         totalLpSupply;
-      tvl = convertToEther(tvl) * assetPrice;
+        tvl = new BigNumber(tvl).div(1e18).multipliedBy(assetPrice).toFixed(6);
+        console.log("tvl-----",tvl)
       tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
       tenPerBlock = convertToEther(tenPerBlock);
       poolAllocPoint = poolDetails["allocPoint"];
@@ -357,12 +365,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
               tvl) *
             365 *
             100
-          : tenPerBlock *
-            28800 *
-            (poolAllocPoint / totalAllocPoint) *
-            (await getTenPrice()) *
-            365 *
-            100;
+          : 0
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
@@ -378,9 +381,10 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       farmName = "TEN";
       getLpTokenLink = `https://exchange.pancakeswap.finance/#/add/BNB/${tenAddress}`;
       strategyInstance = await selectInstance("TEN", poolDetails["strat"]);
-      tvl = await strategyInstance.methods.wantLockedTotal().call();
-      tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
-      tenPerBlock = convertToEther(tenPerBlock);
+      tvl = new BigNumber(await strategyInstance.methods.wantLockedTotal().call()).toNumber();
+      console.log("tvl",tvl)
+      tenPerBlock = convertToEther(await tenfarmInstance.methods.TENPerBlock().call());
+      console.log("ten per block--",tenPerBlock)
       poolAllocPoint = poolDetails["allocPoint"];
 
       let getReserves = await pancakeLPinstance.methods.getReserves().call();
@@ -394,27 +398,21 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
         )
       ).data.wbnb.usd;
       assetPrice =
-        (reserve0 * token0price + reserve1 * token1price) / totalLpSupply;
+        ((reserve0 * token0price + reserve1 * token1price) / totalLpSupply).toFixed(4);
+      console.log("asset price ----",assetPrice)
       tokenTypeBoolean = true;
-      tvl = convertToEther(tvl) * assetPrice;
+      tvl = new BigNumber(tvl).div(1e18).multipliedBy(assetPrice).toFixed(6);
       let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
+      const tenPrice = (await getTenPrice())
+      console.log("tvl-----",tvl)
       tokenYield =
         tvl > 0
-          ? ((tenPerBlock *
-              28800 *
-              (poolAllocPoint / totalAllocPoint) *
-              (await getTenPrice())) /
-              tvl) *
-            365 *
-            100
-          : tenPerBlock *
-            28800 *
-            (poolAllocPoint / totalAllocPoint) *
-            (await getTenPrice()) *
-            365 *
-            100;
+          ? ((tenPerBlock *28800 *(poolAllocPoint / totalAllocPoint) * tenPrice) /tvl) *365 *100
+          : 0
+
+      console.log("token yield",tokenYield)
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
@@ -434,7 +432,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
       assetPrice = await getTenPrice();
       tokenTypeBoolean = false;
-      tvl = convertToEther(tvl) * assetPrice;
+      tvl = new BigNumber(tvl).div(1e18).multipliedBy(assetPrice).toFixed(6);
       tenPerBlock = convertToEther(tenPerBlock);
       poolAllocPoint = poolDetails["allocPoint"];
       let totalAllocPoint = await tenfarmInstance.methods
@@ -449,12 +447,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
               tvl) *
             365 *
             100
-          : tenPerBlock *
-            28800 *
-            (poolAllocPoint / totalAllocPoint) *
-            (await getTenPrice()) *
-            365 *
-            100;
+          : 0
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
@@ -462,6 +455,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       }
     }
     if (userAddress != null) {
+      // console.log("testing---------")
       obj["id"] = poolId;
       obj["liquidBalance"] = LPbalance;
       obj["currentLpDeposit"] = await getCurrentLpDeposit(userAddress, poolId);
@@ -486,6 +480,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       obj["farmApy"] = autoFarmApy * 100;
       obj["optimalCompoundsPerYear"] = "0";
       obj["tenApr"] = tokenYield;
+      console.log("farm apy",tokenYield)
       obj["totalApy"] = tokenYield + autoFarmApy * 100;
       obj["getLpToken"] = getLpTokenLink;
       obj["tokenType"] = tokenTypeBoolean;
@@ -531,11 +526,10 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
 
 export const getPendingTENClaim = async (currentUserAddress, poolId) => {
   try {
-    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress,true);
     const userAddress = currentUserAddress;
     var currentPendingTen = await tenfarmInstance.methods
-      .pendingTEN(poolId, userAddress)
-      .call();
+      .pendingTEN(poolId, userAddress).call();
     currentPendingTen = convertToEther(currentPendingTen);
     return currentPendingTen;
   } catch (err) {
@@ -634,7 +628,7 @@ export const fetchPlatformData = async (userAddress) => {
 
 export const getCurrentApproval = async (poolId, userAddress) => {
   try {
-    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress,true);
     const poolDetails = await tenfarmInstance.methods.poolInfo(poolId).call();
     const lpAddress = poolDetails["want"];
     if (poolId != 0) {
@@ -645,7 +639,7 @@ export const getCurrentApproval = async (poolId, userAddress) => {
       getAllowance = convertToEther(getAllowance);
       return getAllowance;
     } else {
-      const tenTokenInstance = await selectInstance("TENTOKEN", lpAddress);
+      const tenTokenInstance = await selectInstance("TENTOKEN", lpAddress,true);
       var getAllowance = await tenTokenInstance.methods
         .allowance(userAddress, tenFarmAddress)
         .call();
@@ -657,14 +651,36 @@ export const getCurrentApproval = async (poolId, userAddress) => {
   }
 };
 
-export const selectInstance = async (type, contractAddress) => {
-  let web3 = new Web3();
-  const walletType = localStorage.getItem("walletType");
-  if (!!walletType) {
-    web3 = await getWeb3Instance(walletType);
+export const selectInstance = async (type, contractAddress,write=false) => {
+
+
+  let web3 = new Web3()
+  if(write){
+      const walletType = localStorage.getItem("walletType");
+    if (!!walletType) {
+      web3 = await getWeb3Instance(walletType);
+    } else {
+      web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+    }
+    web3.eth.net.getId((err, netId) => {
+      switch (netId) {
+        case "1":
+          console.log('This is mainnet')
+          break
+        case "97":
+          console.log('This is the deprecated Morden test network.')
+          break
+        case "3":
+          console.log('This is the ropsten test network.')
+          break
+        default:
+          web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+      }
+    })
   } else {
     web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
   }
+  
   switch (type) {
     case "TENFARM":
       return new web3.eth.Contract(tenFarmAbi, contractAddress);
