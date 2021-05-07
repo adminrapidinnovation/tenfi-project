@@ -9,6 +9,7 @@ import NumberField from "../NumberField";
 import styles from "styles/modules/Assets/AssetListItemBody.module.scss";
 import { handleOnDeposit, handleOnWithdraw } from "contract/ContractMethods";
 import { refreshPoolData } from "global-function/globalFunction";
+import AssetFeeDetails from "./AssetFeeDetails";
 
 const AssetListItemBody = (props) => {
   const selector = useSelector((state) => state);

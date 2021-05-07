@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from "styles/modules/Assets/AssetListItemDetails.module.scss";
 import { harvestTenFiLpTokens, getTenPrice } from "contract/ContractMethods";
 import { refreshPoolData } from "global-function/globalFunction";
+import AssetFeeDetails from "./AssetFeeDetails";
 
 const AssetListItemDetails = (props) => {
   const selector = useSelector((state) => state);
@@ -69,14 +70,8 @@ const AssetListItemDetails = (props) => {
           {claimLoading ? "Loading..." : "Claim"}
         </button>
       </div>
-      <div className={styles.text}>
-        <p>
-          How to buy and add to staking <a href="#">Tutorials</a>
-        </p>
-        <p>
-          Fees & Tokenomics <a href="#">Read Docs</a>
-        </p>
-      </div>
+
+      <AssetFeeDetails item={item} />
     </section>
   );
 };

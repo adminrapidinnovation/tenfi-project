@@ -10,6 +10,7 @@ import {
   masterchefAbi,
   pancakeLPabi,
 } from "./abi";
+import { getWeb3Instance } from "global-function/globalFunction";
 let web3;
 let tokenList = {
   0: { 0: "TENFI", 1: "TENFI" },
@@ -657,7 +658,13 @@ export const getCurrentApproval = async (poolId, userAddress) => {
 };
 
 export const selectInstance = async (type, contractAddress) => {
-  const web3 = new Web3(window.ethereum);
+  let web3 = new Web3();
+  const walletType = localStorage.getItem("walletType");
+  if (!!walletType) {
+    web3 = await getWeb3Instance(walletType);
+  } else {
+    web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+  }
   switch (type) {
     case "TENFARM":
       return new web3.eth.Contract(tenFarmAbi, contractAddress);

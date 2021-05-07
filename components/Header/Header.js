@@ -1,16 +1,47 @@
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { connectWallet, disconnectWallet } from "redux/actions/user.actions";
 import Link from "next/link";
 import Container from "components/Container";
-import React, { useState } from "react";
 import LogoIcon from "icons/LogoIcon";
 import styles from "styles/modules/Header.module.scss";
 import ConnectWalletModal from "../ConnectWalletModal";
 import HeaderNav from "./HeaderNav";
+import { getWeb3Instance } from "global-function/globalFunction";
 
-export default function Header() {
+const Header = () => {
   const selector = useSelector((state) => state);
+  const dispatch = useDispatch();
   const { isLoggedIn, address } = selector.user;
   const [modalOpen, setModalOpen] = useState(false);
+
+  const refreshLogin = async (web3) => {
+    const accounts = await web3.currentProvider.request({
+      method: "eth_requestAccounts",
+    });
+    if (!!accounts && accounts.length > 0) {
+      dispatch(connectWallet(accounts[0]));
+    } else {
+      dispatch(disconnectWallet());
+    }
+  };
+
+  useEffect(() => {
+    const getLoginStatus = async () => {
+      const walletType = await localStorage.getItem("walletType");
+      try {
+        if (!!walletType) {
+          const web3 = await getWeb3Instance(walletType);
+          if (!!web3) {
+            await refreshLogin(web3);
+          }
+        }
+      } catch (error) {
+        dispatch(disconnectWallet());
+      }
+    };
+    getLoginStatus();
+  }, []);
 
   const getAddress = (address) => {
     const add1 = address.substring(0, 2);
@@ -53,4 +84,5 @@ export default function Header() {
       {modalOpen && <ConnectWalletModal onClose={() => setModalOpen(false)} />}
     </header>
   );
-}
+};
+export default Header;

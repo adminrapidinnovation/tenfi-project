@@ -3,10 +3,7 @@ import { useDispatch } from "react-redux";
 import { connectWallet, disconnectWallet } from "redux/actions/user.actions";
 import styles from "../styles/modules/ConnectWalletModal.module.scss";
 import Modal from "./Modal";
-import { BscConnector } from "@binance-chain/bsc-connector";
-import WalletConnect from "@walletconnect/client";
-import QRCodeModal from "@walletconnect/qrcode-modal";
-import { connectToMetamask } from "contract/ContractMethods";
+import { getWeb3Instance } from "global-function/globalFunction";
 
 const items = [
   {
@@ -19,107 +16,37 @@ const items = [
     src: require("assets/images/BinanceChainWallet.png"),
     title: "Binance Chain Wallet",
   },
-
-  {
-    type: 3,
-    src: require("assets/images/walletconnect-circle-blue.svg"),
-    title: "Wallet Connect",
-  },
 ];
 
 const ConnectWalletModal = ({ onClose, setUserData }) => {
   const dispatch = useDispatch();
+
+  const handleLogin = async (web3, type) => {
+    localStorage.setItem("walletType", type);
+    const accounts = await web3.currentProvider.request({
+      method: "eth_requestAccounts",
+    });
+    if (!!accounts && accounts.length > 0) {
+      dispatch(connectWallet(accounts[0]));
+    } else {
+      dispatch(disconnectWallet());
+    }
+  };
+
   const handleWalletConnect = async (type) => {
-    switch (type) {
-      // ////////////////////////////////////////////////////////
-      case 1:
-        try {
-          const accounts = await connectToMetamask();
-          if (!!accounts && accounts.length > 0) {
-            dispatch(connectWallet(accounts[0]));
-          } else {
-            dispatch(disconnectWallet());
-          }
-        } catch (error) {
-          dispatch(disconnectWallet());
-        } finally {
-          onClose();
-        }
-        break;
-      // ///////////////////////////////////////////////////////////////////////
-      case 2:
-        console.log("bsc");
-        const bsc = new BscConnector({
-          supportedChainIds: [56, 97],
-        });
-        try {
-          await bsc.activate();
-          const accounts = await bsc.getAccount();
-
-          if (accounts) {
-            console.log("accounts===>", accounts);
-            dispatch(connectWallet(accounts));
-          } else {
-            dispatch(disconnectWallet());
-          }
-        } catch (error) {
-          dispatch(disconnectWallet());
-        } finally {
-          onClose();
-        }
-        break;
-      // ////////////////////////////////////////////////////////////
-      case 3:
-        console.log("wallet connect");
-
-        try {
-          const connector = new WalletConnect({
-            bridge: "https://bridge.walletconnect.org", // Required
-            qrcodeModal: QRCodeModal,
-          });
-          if (!connector.connected) {
-            // create new session
-            connector.createSession();
-          }
-          connector.on("connect", (error, payload) => {
-            if (error) {
-              throw error;
-            }
-
-            // Get provided accounts and chainId
-            const { accounts, chainId } = payload.params[0];
-            console.log("Paylaod", payload);
-            console.log("Account", accounts);
-          });
-
-          connector.on("session_update", (error, payload) => {
-            if (error) {
-              throw error;
-            }
-            const { accounts, chainId } = payload.params[0];
-            console.log("Paylaod", payload);
-            console.log("Account", accounts);
-          });
-
-          connector.on("disconnect", (error, payload) => {
-            if (error) {
-              throw error;
-            }
-            console.log("Paylaod", payload);
-            // Delete connector
-          });
-        } catch (error) {
-          console.log(error);
-        }
-        break;
-
-      default:
-        return;
+    try {
+      const web3 = await getWeb3Instance(type);
+      handleLogin(web3, type);
+    } catch (error) {
+      dispatch(disconnectWallet());
+    } finally {
+      onClose();
     }
   };
 
   const handleDeactivate = () => {
     dispatch(disconnectWallet());
+    localStorage.removeItem("walletType");
     onClose();
   };
 
