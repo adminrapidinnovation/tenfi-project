@@ -179,9 +179,9 @@ export const handleOnWithdraw = async (poolId, amount, userAddress) => {
 };
 
 const getFinalBalance = (val) => {
-  const newVal = parseFloat(val).toString();
-  const finalValue = newVal.substring(0, newVal.length);
-  return `${finalValue}`;
+  const newVal = new BigNumber(val).toString()
+  //const finalValue = newVal.substring(0, newVal.length);
+  return newVal
 };
 
 const getLPBalance = async (currentUserAddress, poolId, typeOfPool) => {
