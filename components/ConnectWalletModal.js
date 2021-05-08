@@ -22,15 +22,17 @@ const ConnectWalletModal = ({ onClose, setUserData }) => {
   const dispatch = useDispatch();
 
   const handleLogin = async (web3, type) => {
-    localStorage.setItem("walletType", type);
-    const accounts = await web3.currentProvider.request({
-      method: "eth_requestAccounts",
-    });
-    if (!!accounts && accounts.length > 0) {
-      dispatch(connectWallet(accounts[0]));
-    } else {
-      dispatch(disconnectWallet());
-    }
+    try {
+      localStorage.setItem("walletType", type);
+      const accounts = await web3.currentProvider.request({
+        method: "eth_requestAccounts",
+      });
+      if (!!accounts && accounts.length > 0) {
+        dispatch(connectWallet(accounts[0]));
+      } else {
+        dispatch(disconnectWallet());
+      }
+    } catch (error) {}
   };
 
   const handleWalletConnect = async (type) => {
