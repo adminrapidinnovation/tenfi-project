@@ -1,8 +1,23 @@
 export const tenAddress = "0x5c059D023c87d5d6B7bea49Ce7cbaA953db67b1D";
-
 export const tenFarmAddress = "0xa1710AdB2a99b0da660AD0fD707B655b91ec855b";
-
 export const bnbAddress = "0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F";
+
+export const farmContractAddress = "0x77fDD9E72553DA5f055161bc6Cb38E4D3e8b286A";
+export const telLockAddress = "0xce5d46fe5e350e160befea2f64a022ecfbe24fd1";
+export const adaBnbAddress = "0x78C6eb7489C43d5cbf553C2a3062242b68f3Cfe6";
+export const btcBBnbAddress = "0xFc4898A2120B33e98011a58F63ed2957ACCBf22B";
+export const busdBnbAddress = "0xD6a212cbeF844F99eAf6aDfE748ceDbd3c601DB7";
+export const cakeBnbAddress = "0xCC350F1A625e295628165d8DaE490067cfA58Bb1";
+export const daiBusdAddress = "0xbdd3f14526AA5A9520A5f789eA8DFd6C80478391";
+export const dotBnbAddress = "0x43b2F803C2EA559595c20b4e8Ceb779AD1764245";
+export const ethBnbAddress = "0xb72958B02cd754A91Bfc19584AaE41c855d9c6eC";
+export const linkBnbAddress = "0xd1934CbDcf54E26389714bDB540789c94d1Ec5d5";
+export const uniBnbAddress = "0x28FBaA11dCC25be2C8178DD85d1B4B4Fe0184Ad7";
+export const usdcBusdAddress = "0x8Cc80E4e808e3b3e7b68e31321397940e6b0b1F8";
+export const usdtBusdAddress = "0xC0378C4186b723F4D2fde3e6579F072c3d0C0661";
+export const usdtBnbAddress = "0x8a46Bc19f96aD5c14549C2634a6926456460e487";
+export const vaiBusdAddress = "0x94640E85cb051fEa1B294ADdFf63f7777D35a5Bc";
+export const xrpBnbAddress = "0x3Ee6310e34e4049ea6A18bb3281c53202EFFC3b8";
 
 export const pancakeLPabi = [
   {
@@ -506,21 +521,21 @@ export const tenFarmAbi = [
   },
   {
     inputs: [],
-    name: "TEN",
+    name: "TENFI",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
-    name: "TENMaxSupply",
+    name: "TENFIMaxSupply",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
-    name: "TENPerBlock",
+    name: "TENFIPerBlock",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -542,13 +557,6 @@ export const tenFarmAbi = [
     name: "burnAddress",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "_newAddress", type: "address" }],
-    name: "changeTENaddress",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -589,6 +597,13 @@ export const tenFarmAbi = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
+    name: "liquidityPoolPresent",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "massUpdatePools",
     outputs: [],
@@ -603,11 +618,18 @@ export const tenFarmAbi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "ownerTENFIReward",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "uint256", name: "_pid", type: "uint256" },
       { internalType: "address", name: "_user", type: "address" },
     ],
-    name: "pendingTEN",
+    name: "pendingTENFI",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -619,7 +641,7 @@ export const tenFarmAbi = [
       { internalType: "contract IERC20", name: "want", type: "address" },
       { internalType: "uint256", name: "allocPoint", type: "uint256" },
       { internalType: "uint256", name: "lastRewardBlock", type: "uint256" },
-      { internalType: "uint256", name: "accTENPerShare", type: "uint256" },
+      { internalType: "uint256", name: "accTENFIPerShare", type: "uint256" },
       { internalType: "address", name: "strat", type: "address" },
     ],
     stateMutability: "view",
@@ -629,6 +651,13 @@ export const tenFarmAbi = [
     inputs: [],
     name: "poolLength",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "poolPresentWithStrat",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -707,13 +736,6 @@ export const tenFarmAbi = [
       { internalType: "uint256", name: "_wantAmt", type: "uint256" },
     ],
     name: "withdraw",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "_pid", type: "uint256" }],
-    name: "withdrawAll",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
