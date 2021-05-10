@@ -1,6 +1,6 @@
-export const tenAddress = "0x5c059D023c87d5d6B7bea49Ce7cbaA953db67b1D";
-export const tenFarmAddress = "0xa1710AdB2a99b0da660AD0fD707B655b91ec855b";
-export const bnbAddress = "0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F";
+export const tenAddress = "0x1ecfe23e73f03128644646ba66405dcaf3b32ec3";
+export const tenFarmAddress = "0x77fDD9E72553DA5f055161bc6Cb38E4D3e8b286A";
+export const bnbAddress = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 
 export const farmContractAddress = "0x77fDD9E72553DA5f055161bc6Cb38E4D3e8b286A";
 export const telLockAddress = "0xce5d46fe5e350e160befea2f64a022ecfbe24fd1";
@@ -375,6 +375,7 @@ export const pancakeLPabi = [
       { internalType: "uint256", name: "amount0Out", type: "uint256" },
       { internalType: "uint256", name: "amount1Out", type: "uint256" },
       { internalType: "address", name: "to", type: "address" },
+      { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "swap",
     outputs: [],
@@ -981,10 +982,10 @@ export const tenStrategyPcsAbi = [
       { internalType: "uint256", name: "_pid", type: "uint256" },
       { internalType: "bool", name: "_isCAKEStaking", type: "bool" },
       { internalType: "bool", name: "_isSameAssetDeposit", type: "bool" },
-      { internalType: "bool", name: "_isAquaComp", type: "bool" },
+      { internalType: "bool", name: "_isTENFIComp", type: "bool" },
       {
         internalType: "address[]",
-        name: "_earnedToAQUAPath",
+        name: "_earnedToTENFIPath",
         type: "address[]",
       },
       {
@@ -1007,10 +1008,6 @@ export const tenStrategyPcsAbi = [
         name: "_token1ToEarnedPath",
         type: "address[]",
       },
-      { internalType: "uint256", name: "_controllerFee", type: "uint256" },
-      { internalType: "uint256", name: "_buyBackRate", type: "uint256" },
-      { internalType: "uint256", name: "_entranceFeeFactor", type: "uint256" },
-      { internalType: "uint256", name: "_withdrawFeeFactor", type: "uint256" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -1112,13 +1109,13 @@ export const tenStrategyPcsAbi = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "_controllerFee",
+        name: "_TENGas_Fee",
         type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
-        name: "_buyBackRate",
+        name: "_TENBurn",
         type: "uint256",
       },
       {
@@ -1159,15 +1156,57 @@ export const tenStrategyPcsAbi = [
   },
   {
     inputs: [],
-    name: "AQUAAddress",
+    name: "TENBurn",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TENBurnMax",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TENBurnUL",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TENFIAddress",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
-    name: "aquaFarmAddress",
+    name: "TENFIFarm",
     outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TENGas_Fee",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TENGas_FeeMax",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TENGas_FeeUL",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -1175,48 +1214,6 @@ export const tenStrategyPcsAbi = [
     inputs: [],
     name: "buyBackAddress",
     outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "buyBackRate",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "buyBackRateMax",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "buyBackRateUL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "controllerFee",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "controllerFeeMax",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "controllerFeeUL",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -1253,7 +1250,7 @@ export const tenStrategyPcsAbi = [
   },
   {
     inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    name: "earnedToAQUAPath",
+    name: "earnedToTENFIPath",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
@@ -1327,13 +1324,6 @@ export const tenStrategyPcsAbi = [
   },
   {
     inputs: [],
-    name: "isAquaComp",
-    outputs: [{ internalType: "bool", name: "", type: "bool" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "isCAKEStaking",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
@@ -1342,6 +1332,13 @@ export const tenStrategyPcsAbi = [
   {
     inputs: [],
     name: "isSameAssetDeposit",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "isTENFIComp",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
@@ -1438,8 +1435,8 @@ export const tenStrategyPcsAbi = [
     inputs: [
       { internalType: "uint256", name: "_entranceFeeFactor", type: "uint256" },
       { internalType: "uint256", name: "_withdrawFeeFactor", type: "uint256" },
-      { internalType: "uint256", name: "_controllerFee", type: "uint256" },
-      { internalType: "uint256", name: "_buyBackRate", type: "uint256" },
+      { internalType: "uint256", name: "_TENGas_Fee", type: "uint256" },
+      { internalType: "uint256", name: "_TENBurn", type: "uint256" },
       { internalType: "uint256", name: "_slippageFactor", type: "uint256" },
     ],
     name: "setSettings",

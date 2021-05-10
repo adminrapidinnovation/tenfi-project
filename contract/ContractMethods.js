@@ -13,9 +13,20 @@ import {
 import { getWeb3Instance } from "global-function/globalFunction";
 let web3;
 let tokenList = {
-  0: { 0: "TENFI", 1: "TENFI" },
-  1: { 0: "TENFI-BNB", 1: "TENFI" },
-  2: { 0: "BUSD-USDC", 1: "PCS" },
+  0: { 0: "ADA-BNB", 1: "PCS" },
+  1: { 0: "BTCB-BNB", 1: "PCS" },
+  2: { 0: "BUSD-BNB", 1: "PCS" },
+  3: { 0: "CAKE-BNB", 1: "PCS" },
+  4: { 0: "DAI-BUSD", 1: "PCS" },
+  5: { 0: "DOT-BNB", 1: "PCS" },
+  6: { 0: "ETH-BNB", 1: "PCS" },
+  7: { 0: "LINK-BNB", 1: "PCS" },
+  8: { 0: "UNI-BNB", 1: "PCS" },
+  9: { 0: "USDC-BUSD", 1: "PCS" },
+  10: { 0: "USDT-BUSD", 1: "PCS" },
+  11: { 0: "USDT-BNB", 1: "PCS" },
+  12: { 0: "VAI-BUSD", 1: "PCS" },
+  13: { 0: "XRP-BNB", 1: "PCS" },
 };
 import { BigNumber } from "bignumber.js";
 
@@ -213,9 +224,9 @@ export const handleOnWithdraw = async (poolId, amount, userAddress) => {
 };
 
 const getFinalBalance = (val) => {
-  const newVal = new BigNumber(val).toString()
+  const newVal = new BigNumber(val).toString();
   //const finalValue = newVal.substring(0, newVal.length);
-  return newVal
+  return newVal;
 };
 
 const getLPBalance = async (currentUserAddress, poolId, typeOfPool) => {
@@ -384,7 +395,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
         totalLpSupply;
       tvl = new BigNumber(tvl).div(1e18).multipliedBy(assetPrice).toFixed(6);
       console.log("tvl-----", tvl);
-      tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
+      tenPerBlock = await tenfarmInstance.methods.TENFIPerBlock().call();
       tenPerBlock = convertToEther(tenPerBlock);
       poolAllocPoint = poolDetails["allocPoint"];
       let totalAllocPoint = await tenfarmInstance.methods
@@ -420,7 +431,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       ).toNumber();
       console.log("tvl", tvl);
       tenPerBlock = convertToEther(
-        await tenfarmInstance.methods.TENPerBlock().call()
+        await tenfarmInstance.methods.TENFIPerBlock().call()
       );
       console.log("ten per block--", tenPerBlock);
       poolAllocPoint = poolDetails["allocPoint"];
@@ -475,7 +486,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       getLpTokenLink = null;
       strategyInstance = await selectInstance("TEN", poolDetails["strat"]);
       tvl = await strategyInstance.methods.wantLockedTotal().call();
-      tenPerBlock = await tenfarmInstance.methods.TENPerBlock().call();
+      tenPerBlock = await tenfarmInstance.methods.TENFIPerBlock().call();
       assetPrice = await getTenPrice();
       tokenTypeBoolean = false;
       tvl = new BigNumber(tvl).div(1e18).multipliedBy(assetPrice).toFixed(6);
@@ -610,7 +621,9 @@ export const harvestAllTenFiLpTokens = async (userAddress) => {
 const getPoolLength = async () => {
   try {
     const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+    console.log("tenfarmInstance==>", tenfarmInstance);
     const poolLength = await tenfarmInstance.methods.poolLength().call();
+    console.log("poolLength==>", poolLength);
     return poolLength;
   } catch (err) {
     console.log(err);
@@ -668,7 +681,7 @@ export const fetchPlatformData = async (userAddress) => {
       // totalProfitGenerated:
       //   convertToEther(tenTotalSupply) * (await getTenPrice()),
       // perDayProfitGenerated:
-      //   convertToEther(await tenFarmInstance.methods.TENPerBlock().call()) *
+      //   convertToEther(await tenFarmInstance.methods.TENFIPerBlock().call()) *
       //   (await getTenPrice()),
     };
     return obj;
@@ -717,7 +730,7 @@ export const selectInstance = async (type, contractAddress, write = false) => {
     if (!!walletType) {
       web3 = await getWeb3Instance(walletType);
     } else {
-      web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+      web3 = new Web3("https://bsc-dataseed.binance.org/");
     }
     web3.eth.net.getId((err, netId) => {
       switch (netId) {
@@ -731,11 +744,11 @@ export const selectInstance = async (type, contractAddress, write = false) => {
           console.log("This is the ropsten test network.");
           break;
         default:
-          web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+          web3 = new Web3("https://bsc-dataseed.binance.org/");
       }
     });
   } else {
-    web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+    web3 = new Web3("https://bsc-dataseed.binance.org/");
   }
 
   switch (type) {
