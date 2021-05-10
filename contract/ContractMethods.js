@@ -36,11 +36,16 @@ export const getTenPrice = async () => {
   let poolDetails = await tenfarmInstance.methods.poolInfo("14").call();
   const lpAddress = '0xED44fa40e875fE29c761E28918b570182dF84286';
   const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
-  const bnbPrice = (
-    await axios.get(
-      "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
-    )
-  ).data.wbnb.usd;
+  const pancakeLPinstance3 = await selectInstance('PANCAKELP', '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16');
+      let reserveOfBUSDBNB = await pancakeLPinstance3.methods.getReserves().call();
+      let getBNBReserve= await reserveOfBUSDBNB['_reserve0'];
+      let getUSDReserve= await reserveOfBUSDBNB['_reserve1'];
+      const bnbPrice= getUSDReserve/getBNBReserve;
+  // const bnbPrice = (
+  //   await axios.get(
+  //     "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
+  //   )
+  // ).data.wbnb.usd;
   let getReserves = await pancakeLPinstance.methods.getReserves().call();
   let reserve0 = parseFloat(await getReserves["_reserve0"]);
   let reserve1 = parseFloat(await getReserves["_reserve1"]);
@@ -444,11 +449,17 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       let reserve1 = parseFloat(await getReserves["_reserve1"]);
       let totalLpSupply = await pancakeLPinstance.methods.totalSupply().call();
       const token0price = await getTenPrice();
-      const token1price = (
-        await axios.get(
-          "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
-        )
-      ).data.wbnb.usd;
+
+      const pancakeLPinstance3 = await selectInstance('PANCAKELP', '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16');
+      let reserveOfBUSDBNB = await pancakeLPinstance3.methods.getReserves().call();
+      let getBNBReserve= await reserveOfBUSDBNB['_reserve0'];
+      let getUSDReserve= await reserveOfBUSDBNB['_reserve1'];
+      const token1price= getUSDReserve/getBNBReserve;
+      // const token1price = (
+      //   await axios.get(
+      //     "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
+      //   )
+      // ).data.wbnb.usd;
       assetPrice = (
         (reserve0 * token0price + reserve1 * token1price) /
         totalLpSupply
