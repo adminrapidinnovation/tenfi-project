@@ -4,20 +4,39 @@ import ChevronDownIcon from "icons/ChevronDownIcon";
 import AssetsListDropdown from "./AssetListDropdown";
 import styles from "styles/modules/Assets/AssetList.module.scss";
 import TENFiIcon from "assets/images/TEnfi-token.svg";
-import BNBIcon from "assets/images/binance-coin-bnb-logo.svg";
 import BUSDIcon from "assets/images/busd.svg";
-import USDCIcon from "assets/images/usdc.8dd9681c.svg";
+import BNBIcon from "assets/images/binance-coin-bnb-logo.svg";
+import ADAIcon from "assets/images/ada-icon.svg";
+import BTCBIcon from "assets/images/btcb-icon.svg";
+import CAKEIcon from "assets/images/cake-icon.svg";
+import DAIIcon from "assets/images/dai-icon.svg";
+import DOTIcon from "assets/images/Dot.svg";
+import ETHIcon from "assets/images/eth-icon.svg";
+import LINKIcon from "assets/images/link-icon.svg";
+import UNIIcon from "assets/images/uni-icon.svg";
+import USDCIcon from "assets/images/usdc-icon.svg";
+import USDTIcon from "assets/images/usdt-icon.svg";
+import VAIIcon from "assets/images/vai.png";
+import XRPIcon from "assets/images/xrp-icon.svg";
+
 import AssetIcons from "./AssetIcons";
 
 const renderIcon = (rowId, token) => {
   const title = token.split("-");
   if (rowId === 0) {
-    return <AssetIcons firstImg={TENFiIcon} firstTitle={title[0]} />;
+    return (
+      <AssetIcons
+        firstImg={ADAIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
   }
   if (rowId === 1) {
     return (
       <AssetIcons
-        firstImg={TENFiIcon}
+        firstImg={BTCBIcon}
         firstTitle={title[0]}
         secondImg={BNBIcon}
         secondTitle={title[1]}
@@ -29,7 +48,117 @@ const renderIcon = (rowId, token) => {
       <AssetIcons
         firstImg={BUSDIcon}
         firstTitle={title[0]}
-        secondImg={USDCIcon}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 3) {
+    return (
+      <AssetIcons
+        firstImg={CAKEIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 4) {
+    return (
+      <AssetIcons
+        firstImg={DAIIcon}
+        firstTitle={title[0]}
+        secondImg={BUSDIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 5) {
+    return (
+      <AssetIcons
+        firstImg={DOTIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 6) {
+    return (
+      <AssetIcons
+        firstImg={ETHIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 7) {
+    return (
+      <AssetIcons
+        firstImg={LINKIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 8) {
+    return (
+      <AssetIcons
+        firstImg={UNIIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 9) {
+    return (
+      <AssetIcons
+        firstImg={USDCIcon}
+        firstTitle={title[0]}
+        secondImg={BUSDIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 10) {
+    return (
+      <AssetIcons
+        firstImg={USDTIcon}
+        firstTitle={title[0]}
+        secondImg={BUSDIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 11) {
+    return (
+      <AssetIcons
+        firstImg={USDTIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 12) {
+    return (
+      <AssetIcons
+        firstImg={VAIIcon}
+        firstTitle={title[0]}
+        secondImg={BUSDIcon}
+        secondTitle={title[1]}
+      />
+    );
+  }
+  if (rowId === 13) {
+    return (
+      <AssetIcons
+        firstImg={XRPIcon}
+        firstTitle={title[0]}
+        secondImg={BNBIcon}
         secondTitle={title[1]}
       />
     );
