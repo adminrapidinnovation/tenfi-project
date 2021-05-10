@@ -235,7 +235,7 @@ export default [
     ]
   },
   {
-    src: require('assets/images/pancakeswap-cake-logo.svg'),
+    src: require('assets/images/cake-icon.svg'),
     title: 'CAKE',
     apy: '7572%',
     tvl: '$110,562,156.00',

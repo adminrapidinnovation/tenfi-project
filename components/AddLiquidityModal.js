@@ -12,7 +12,7 @@ export default function AddLiquidityModal({
   return (
     <ModalBlack onClose={onClose}
       title={title}>
-      <ExchangeItem src={require('assets/images/pancakeswap-cake-logo.svg')}
+      <ExchangeItem src={require('assets/images/cake-icon.svg')}
         title="CAKE">
         Input
       </ExchangeItem>
