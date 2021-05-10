@@ -10,7 +10,7 @@ const AssetApyDetails = ({ item }) => {
           Farm APY: <span>{parseFloat(item.farmApy).toFixed(2)}%</span>
         </li>
         <li>
-          Rewards APR: <span>0.00%</span>
+          Rewards APR: <span>{parseFloat(item.tenApr).toFixed(2)}%</span>
         </li>
         <li>
           Total: <span>{parseFloat(item.totalApy).toFixed(2)}%</span>

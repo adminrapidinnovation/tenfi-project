@@ -13,39 +13,40 @@ import {
 import { getWeb3Instance } from "global-function/globalFunction";
 let web3;
 let tokenList = {
-  0: { 0: "ADA-BNB", 1: "PCS" },
-  1: { 0: "BTCB-BNB", 1: "PCS" },
-  2: { 0: "BUSD-BNB", 1: "PCS" },
-  3: { 0: "CAKE-BNB", 1: "PCS" },
-  4: { 0: "DAI-BUSD", 1: "PCS" },
-  5: { 0: "DOT-BNB", 1: "PCS" },
-  6: { 0: "ETH-BNB", 1: "PCS" },
-  7: { 0: "LINK-BNB", 1: "PCS" },
-  8: { 0: "UNI-BNB", 1: "PCS" },
-  9: { 0: "USDC-BUSD", 1: "PCS" },
-  10: { 0: "USDT-BUSD", 1: "PCS" },
-  11: { 0: "USDT-BNB", 1: "PCS" },
-  12: { 0: "VAI-BUSD", 1: "PCS" },
-  13: { 0: "XRP-BNB", 1: "PCS" },
+  0: { 0: "ADA-BNB", 1: "PCS" , 2:258},
+  1: { 0: "BTCB-BNB", 1: "PCS", 2:246},
+  2: { 0: "BUSD-BNB", 1: "PCS", 2:244 },
+  3: { 0: "CAKE-BNB", 1: "PCS", 2:243 },
+  4: { 0: "DAI-BUSD", 1: "PCS", 2:258 },
+  5: { 0: "DOT-BNB", 1: "PCS", 2:250 },
+  6: { 0: "ETH-BNB", 1: "PCS", 2:247 },
+  7: { 0: "LINK-BNB", 1: "PCS", 2:251 },
+  8: { 0: "UNI-BNB", 1: "PCS", 2:252 },
+  9: { 0: "USDC-BUSD", 1: "PCS", 2:258 },
+  10: { 0: "USDT-BUSD", 1: "PCS", 2:248 },
+  11: { 0: "USDT-BNB", 1: "PCS", 2:245 },
+  12: { 0: "VAI-BUSD", 1: "PCS", 2:249 },
+  13: { 0: "XRP-BNB", 1: "PCS", 2:257 },
+  14: { 0: "TENFI", 1: "TENFI"},
 };
 import { BigNumber } from "bignumber.js";
 
 export const getTenPrice = async () => {
-  // const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
-  // let poolDetails = await tenfarmInstance.methods.poolInfo("0").call();
-  // const lpAddress = poolDetails["want"];
-  // const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
-  // const bnbPrice = (
-  //   await axios.get(
-  //     "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
-  //   )
-  // ).data.wbnb.usd;
-  // let getReserves = await pancakeLPinstance.methods.getReserves().call();
-  // let reserve0 = parseFloat(await getReserves["_reserve0"]);
-  // let reserve1 = parseFloat(await getReserves["_reserve1"]);
-  // let bnbPerTEN = reserve1 / reserve0;
-  // const tenfinalPrice = bnbPerTEN * bnbPrice;
-  return 2700;
+  const tenfarmInstance = await selectInstance("TENFARM", tenFarmAddress);
+  let poolDetails = await tenfarmInstance.methods.poolInfo("14").call();
+  const lpAddress = '0xED44fa40e875fE29c761E28918b570182dF84286';
+  const pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
+  const bnbPrice = (
+    await axios.get(
+      "https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
+    )
+  ).data.wbnb.usd;
+  let getReserves = await pancakeLPinstance.methods.getReserves().call();
+  let reserve0 = parseFloat(await getReserves["_reserve0"]);
+  let reserve1 = parseFloat(await getReserves["_reserve1"]);
+  let bnbPerTEN = reserve1 / reserve0;
+  const tenfinalPrice = bnbPerTEN * bnbPrice;
+  return tenfinalPrice;
 };
 
 export const getWeb3Val = async () => {
@@ -368,26 +369,25 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
     let currentBalance;
     let LPbalance;
     // console.log(tokenList[poolId][1]);
-    if (tokenList[poolId][1] === "PCS") {
+    if (tokenList[poolId][0] !== "TENFI-BNB" && tokenList[poolId][1] === "PCS") {
       const lpAddress = poolDetails["want"];
       pancakeLPinstance = await selectInstance("PANCAKELP", lpAddress);
-      // const token = (
-      //   await axios.get("https://api.pancakeswap.info/api/v2/tokens")
-      // ).data;
+      const token = (
+        await axios.get("https://api.pancakeswap.info/api/v2/tokens")
+      ).data;
       let getReserves = await pancakeLPinstance.methods.getReserves().call();
       let reserve0 = parseFloat(await getReserves["_reserve0"]);
       let reserve1 = parseFloat(await getReserves["_reserve1"]);
       let totalLpSupply = await pancakeLPinstance.methods.totalSupply().call();
       let token0Address = await pancakeLPinstance.methods.token0().call();
       let token1Address = await pancakeLPinstance.methods.token1().call();
-      let reserve0tokenPrice = 1.1;
-      let reserve1tokenPrice = 1;
+      let reserve0tokenPrice = parseFloat(token.data[token0Address].price)
+      let reserve1tokenPrice = parseFloat(token.data[token1Address].price)
       tokenType = "LP";
       tokenTypeBoolean = true;
       farmName = "PCS";
       strategyInstance = await selectInstance("PCS", poolDetails["strat"]);
-      let autoPoolId = await strategyInstance.methods.pid().call();
-      autoFarmApy = 0;
+      autoFarmApy = pools[tokenList[poolId][2]]['APY'];
       getLpTokenLink = `https://exchange.pancakeswap.finance/#/add/${token0Address}/${token1Address}`;
       tvl = await strategyInstance.methods.wantLockedTotal().call();
       assetPrice =
@@ -410,7 +410,10 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
               tvl) *
             365 *
             100
-          : 0;
+          : (tenPerBlock *
+            28800 *
+            (poolAllocPoint / totalAllocPoint) *
+            (await getTenPrice()));
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
@@ -463,11 +466,14 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
           ? ((tenPerBlock *
               28800 *
               (poolAllocPoint / totalAllocPoint) *
-              tenPrice) /
+              (await getTenPrice())) /
               tvl) *
             365 *
             100
-          : 0;
+          : (tenPerBlock *
+            28800 *
+            (poolAllocPoint / totalAllocPoint) *
+            (await getTenPrice()));
 
       console.log("token yield", tokenYield);
       tokenYieldPerDay = tokenYield / 365;
@@ -495,7 +501,7 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
       let totalAllocPoint = await tenfarmInstance.methods
         .totalAllocPoint()
         .call();
-      tokenYield =
+        tokenYield =
         tvl > 0
           ? ((tenPerBlock *
               28800 *
@@ -504,7 +510,10 @@ const fetchLiquidityPoolData = async (userAddress, poolId) => {
               tvl) *
             365 *
             100
-          : 0;
+          : (tenPerBlock *
+            28800 *
+            (poolAllocPoint / totalAllocPoint) *
+            (await getTenPrice()));
       tokenYieldPerDay = tokenYield / 365;
       if (userAddress) {
         currentBalance = 0;
