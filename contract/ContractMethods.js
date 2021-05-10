@@ -590,7 +590,7 @@ export const getPendingTENClaim = async (currentUserAddress, poolId) => {
     );
     const userAddress = currentUserAddress;
     var currentPendingTen = await tenfarmInstance.methods
-      .pendingTEN(poolId, userAddress)
+      .pendingTENFI(poolId, userAddress)
       .call();
     currentPendingTen = convertToEther(currentPendingTen);
     return currentPendingTen;
@@ -668,7 +668,7 @@ export const fetchPlatformData = async (userAddress) => {
       await tenTokenInstance.methods.totalSupply().call()
     );
     maxSupply = convertToEther(
-      await tenFarmInstance.methods.TENMaxSupply().call()
+      await tenFarmInstance.methods.TENFIMaxSupply().call()
     );
     let obj = {
       circulatingSupply: convertToEther(tenTotalSupply),
