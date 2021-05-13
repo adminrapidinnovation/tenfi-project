@@ -249,14 +249,19 @@ const getLPBalance = async (currentUserAddress, poolId, typeOfPool) => {
         .call();
       // console.log("This is the balance");
       // console.log(balanceVal);
-      balance = convertToEther(balanceVal);
+      let x = new BigNumber(balanceVal)
+      balance =  x.div(1e18).toString()
     } else if (typeOfPool === "TEN") {
       const tenTokenInstance = await selectInstance("TENTOKEN", lpAddress);
       const balanceVal = await tenTokenInstance.methods
         .balanceOf(userAddress)
         .call();
-      balance = convertToEther(balanceVal);
+        let x = new BigNumber(balanceVal)
+        balance =  x.div(1e18).toString()
     }
+    console.log(convertToEther(470639659033),typeof(convertToEther(470639659033)))
+    console.log("testing---->",getFinalBalance(convertToEther(470639659033)))
+    console.log("testing===>",getFinalBalance(convertToEther(470639659033)).toFixed(2))
     const finalBalance = getFinalBalance(balance);
     return finalBalance;
   } catch (err) {
